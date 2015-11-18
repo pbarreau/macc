@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_UR2QkI1qEeWKCfw7sFCFHQ" name="Model">
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_UR2QkY1qEeWKCfw7sFCFHQ">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:StateMachine" xmi:id="_XgL00I1qEeWKCfw7sFCFHQ" name="bar_2016_csg2" useCase="_yJNh4I1qEeWKCfw7sFCFHQ _1mA_8I1qEeWKCfw7sFCFHQ _8NNWYI1qEeWKCfw7sFCFHQ _CmUNgI1rEeWKCfw7sFCFHQ _ON8X8I1rEeWKCfw7sFCFHQ _RS7L4I1rEeWKCfw7sFCFHQ _UhxGcI1rEeWKCfw7sFCFHQ _8StE8I1rEeWKCfw7sFCFHQ __yPt8I1rEeWKCfw7sFCFHQ _nCTyMI2nEeWk9vQ4VEnOhQ">
+    <ownedUseCase xmi:type="uml:UseCase" xmi:id="_yJNh4I1qEeWKCfw7sFCFHQ" name="Lire Sonde" subject="_XgL00I1qEeWKCfw7sFCFHQ">
+      <include xmi:type="uml:Include" xmi:id="_WIGT0I2nEeWk9vQ4VEnOhQ" addition="_1mA_8I1qEeWKCfw7sFCFHQ"/>
+    </ownedUseCase>
+    <ownedUseCase xmi:type="uml:UseCase" xmi:id="_1mA_8I1qEeWKCfw7sFCFHQ" name="Transmettre a BDD" subject="_XgL00I1qEeWKCfw7sFCFHQ">
+      <include xmi:type="uml:Include" xmi:id="_YJyewI2nEeWk9vQ4VEnOhQ" addition="_UhxGcI1rEeWKCfw7sFCFHQ"/>
+    </ownedUseCase>
+    <ownedUseCase xmi:type="uml:UseCase" xmi:id="_8NNWYI1qEeWKCfw7sFCFHQ" name="Enregistrer IR" subject="_XgL00I1qEeWKCfw7sFCFHQ">
+      <include xmi:type="uml:Include" xmi:id="_H5lMAI1tEeWKCfw7sFCFHQ" addition="_UhxGcI1rEeWKCfw7sFCFHQ"/>
+    </ownedUseCase>
+    <ownedUseCase xmi:type="uml:UseCase" xmi:id="_CmUNgI1rEeWKCfw7sFCFHQ" name="Rejouer IR" subject="_XgL00I1qEeWKCfw7sFCFHQ">
+      <extensionPoint xmi:type="uml:ExtensionPoint" xmi:id="_OEyvQI2oEeWk9vQ4VEnOhQ" name="ext_Tel"/>
+      <include xmi:type="uml:Include" xmi:id="_I3088I1tEeWKCfw7sFCFHQ" addition="_UhxGcI1rEeWKCfw7sFCFHQ"/>
+    </ownedUseCase>
+    <ownedUseCase xmi:type="uml:UseCase" xmi:id="_ON8X8I1rEeWKCfw7sFCFHQ" name="Visualiser Temperature" subject="_XgL00I1qEeWKCfw7sFCFHQ">
+      <include xmi:type="uml:Include" xmi:id="_LQbMAI1tEeWKCfw7sFCFHQ" addition="_UhxGcI1rEeWKCfw7sFCFHQ"/>
+    </ownedUseCase>
+    <ownedUseCase xmi:type="uml:UseCase" xmi:id="_RS7L4I1rEeWKCfw7sFCFHQ" name="Fixer Consigne" subject="_XgL00I1qEeWKCfw7sFCFHQ">
+      <extensionPoint xmi:type="uml:ExtensionPoint" xmi:id="_RY4_EI1tEeWKCfw7sFCFHQ" name="ext_Horaire"/>
+      <extensionPoint xmi:type="uml:ExtensionPoint" xmi:id="_TbQfcI1tEeWKCfw7sFCFHQ" name="ext_Temperature"/>
+      <include xmi:type="uml:Include" xmi:id="_J1Z_gI1tEeWKCfw7sFCFHQ" addition="_UhxGcI1rEeWKCfw7sFCFHQ"/>
+    </ownedUseCase>
+    <ownedUseCase xmi:type="uml:UseCase" xmi:id="_UhxGcI1rEeWKCfw7sFCFHQ" name="Utiliser BDD" subject="_XgL00I1qEeWKCfw7sFCFHQ"/>
+    <ownedUseCase xmi:type="uml:UseCase" xmi:id="_8StE8I1rEeWKCfw7sFCFHQ" name="Fixer Horaire" subject="_XgL00I1qEeWKCfw7sFCFHQ">
+      <extend xmi:type="uml:Extend" xmi:id="_RYy4cI1tEeWKCfw7sFCFHQ" extendedCase="_RS7L4I1rEeWKCfw7sFCFHQ" extensionLocation="_RY4_EI1tEeWKCfw7sFCFHQ"/>
+    </ownedUseCase>
+    <ownedUseCase xmi:type="uml:UseCase" xmi:id="__yPt8I1rEeWKCfw7sFCFHQ" name="Fixer Temperature" subject="_XgL00I1qEeWKCfw7sFCFHQ">
+      <extend xmi:type="uml:Extend" xmi:id="_Sh-HAI1tEeWKCfw7sFCFHQ" extendedCase="_RS7L4I1rEeWKCfw7sFCFHQ" extensionLocation="_RY4_EI1tEeWKCfw7sFCFHQ"/>
+    </ownedUseCase>
+    <ownedUseCase xmi:type="uml:UseCase" xmi:id="_nCTyMI2nEeWk9vQ4VEnOhQ" name="Rejouer Depuis Telephone" subject="_XgL00I1qEeWKCfw7sFCFHQ">
+      <extend xmi:type="uml:Extend" xmi:id="_OEfNQI2oEeWk9vQ4VEnOhQ" extendedCase="_CmUNgI1rEeWKCfw7sFCFHQ" extensionLocation="_OEyvQI2oEeWk9vQ4VEnOhQ"/>
+    </ownedUseCase>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Actor" xmi:id="_jT5BgI1sEeWKCfw7sFCFHQ" name="Sonde T"/>
+  <packagedElement xmi:type="uml:Actor" xmi:id="_rezNcI1sEeWKCfw7sFCFHQ" name="Recepteur IR"/>
+  <packagedElement xmi:type="uml:Actor" xmi:id="_tNDfAI1sEeWKCfw7sFCFHQ" name="Emetteur IR"/>
+  <packagedElement xmi:type="uml:Actor" xmi:id="_w5BacI1sEeWKCfw7sFCFHQ" name="Utilisateur"/>
+  <packagedElement xmi:type="uml:Actor" xmi:id="_yYoMAI1sEeWKCfw7sFCFHQ" name="BDD"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_uQYHwI1tEeWk9vQ4VEnOhQ" name="A_sonde t_lire sonde" memberEnd="_uQYHwY1tEeWk9vQ4VEnOhQ _uQYHxI1tEeWk9vQ4VEnOhQ">
+    <ownedEnd xmi:type="uml:Property" xmi:id="_uQYHwY1tEeWk9vQ4VEnOhQ" name="sonde t" type="_jT5BgI1sEeWKCfw7sFCFHQ" association="_uQYHwI1tEeWk9vQ4VEnOhQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_uQYHwo1tEeWk9vQ4VEnOhQ" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_uQYHw41tEeWk9vQ4VEnOhQ" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_uQYHxI1tEeWk9vQ4VEnOhQ" name="lire sonde" type="_yJNh4I1qEeWKCfw7sFCFHQ" association="_uQYHwI1tEeWk9vQ4VEnOhQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_uQYHxY1tEeWk9vQ4VEnOhQ" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_uQYHxo1tEeWk9vQ4VEnOhQ" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_z5zOYI1tEeWk9vQ4VEnOhQ" name="A_recepteur ir_enregistrer ir" memberEnd="_z5zOYY1tEeWk9vQ4VEnOhQ _z5zOZI1tEeWk9vQ4VEnOhQ">
+    <ownedEnd xmi:type="uml:Property" xmi:id="_z5zOYY1tEeWk9vQ4VEnOhQ" name="recepteur ir" type="_rezNcI1sEeWKCfw7sFCFHQ" association="_z5zOYI1tEeWk9vQ4VEnOhQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_z5zOYo1tEeWk9vQ4VEnOhQ" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_z5zOY41tEeWk9vQ4VEnOhQ" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_z5zOZI1tEeWk9vQ4VEnOhQ" name="enregistrer ir" type="_8NNWYI1qEeWKCfw7sFCFHQ" association="_z5zOYI1tEeWk9vQ4VEnOhQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_z5zOZY1tEeWk9vQ4VEnOhQ" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_z5zOZo1tEeWk9vQ4VEnOhQ" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_35y5EI1tEeWk9vQ4VEnOhQ" name="A_emetteur ir_rejouer ir" memberEnd="_35y5EY1tEeWk9vQ4VEnOhQ _35y5FI1tEeWk9vQ4VEnOhQ">
+    <ownedEnd xmi:type="uml:Property" xmi:id="_35y5EY1tEeWk9vQ4VEnOhQ" name="emetteur ir" type="_tNDfAI1sEeWKCfw7sFCFHQ" association="_35y5EI1tEeWk9vQ4VEnOhQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_35y5Eo1tEeWk9vQ4VEnOhQ" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_35y5E41tEeWk9vQ4VEnOhQ" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_35y5FI1tEeWk9vQ4VEnOhQ" name="rejouer ir" type="_CmUNgI1rEeWKCfw7sFCFHQ" association="_35y5EI1tEeWk9vQ4VEnOhQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_35y5FY1tEeWk9vQ4VEnOhQ" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_35y5Fo1tEeWk9vQ4VEnOhQ" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_6elKAI1tEeWk9vQ4VEnOhQ" name="A_bdd_utiliser bdd" memberEnd="_6elKAY1tEeWk9vQ4VEnOhQ _6elKBI1tEeWk9vQ4VEnOhQ">
+    <ownedEnd xmi:type="uml:Property" xmi:id="_6elKAY1tEeWk9vQ4VEnOhQ" name="bdd" type="_yYoMAI1sEeWKCfw7sFCFHQ" association="_6elKAI1tEeWk9vQ4VEnOhQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6elKAo1tEeWk9vQ4VEnOhQ" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_6elKA41tEeWk9vQ4VEnOhQ" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_6elKBI1tEeWk9vQ4VEnOhQ" name="utiliser bdd" type="_UhxGcI1rEeWKCfw7sFCFHQ" association="_6elKAI1tEeWk9vQ4VEnOhQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6elKBY1tEeWk9vQ4VEnOhQ" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_6elKBo1tEeWk9vQ4VEnOhQ" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_-T4AkI1tEeWk9vQ4VEnOhQ" name="A_superviseur_visualiser temperature" memberEnd="_-T4AkY1tEeWk9vQ4VEnOhQ _-T4AlI1tEeWk9vQ4VEnOhQ">
+    <ownedEnd xmi:type="uml:Property" xmi:id="_-T4AkY1tEeWk9vQ4VEnOhQ" name="superviseur" type="_w5BacI1sEeWKCfw7sFCFHQ" association="_-T4AkI1tEeWk9vQ4VEnOhQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_-T4Ako1tEeWk9vQ4VEnOhQ" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_-T4Ak41tEeWk9vQ4VEnOhQ" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_-T4AlI1tEeWk9vQ4VEnOhQ" name="visualiser temperature" type="_ON8X8I1rEeWKCfw7sFCFHQ" association="_-T4AkI1tEeWk9vQ4VEnOhQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_-T4AlY1tEeWk9vQ4VEnOhQ" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_-T4Alo1tEeWk9vQ4VEnOhQ" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_c5WvwI2oEeWk9vQ4VEnOhQ" name="A_utilisateur_rejouer ir" memberEnd="_c5WvwY2oEeWk9vQ4VEnOhQ _c5WvxI2oEeWk9vQ4VEnOhQ">
+    <ownedEnd xmi:type="uml:Property" xmi:id="_c5WvwY2oEeWk9vQ4VEnOhQ" name="utilisateur" type="_w5BacI1sEeWKCfw7sFCFHQ" association="_c5WvwI2oEeWk9vQ4VEnOhQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_c5Wvwo2oEeWk9vQ4VEnOhQ" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_c5Wvw42oEeWk9vQ4VEnOhQ" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_c5WvxI2oEeWk9vQ4VEnOhQ" name="rejouer ir" type="_CmUNgI1rEeWKCfw7sFCFHQ" association="_c5WvwI2oEeWk9vQ4VEnOhQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_c5WvxY2oEeWk9vQ4VEnOhQ" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_c5Wvxo2oEeWk9vQ4VEnOhQ" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+</uml:Model>

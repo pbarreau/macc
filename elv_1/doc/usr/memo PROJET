@@ -1,0 +1,2 @@
+Pour se connecter :
+mysql -h 192.168.13.91 --user=pi --password=Simconolat

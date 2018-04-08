@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    tools:context="com.example.j_lds.macc.ClimHome">
+
+    <TextView
+        android:id="@+id/textView_name"
+        android:layout_width="119dp"
+        android:layout_height="82dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="16dp"
+        android:text="Hello "
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="#ffffff"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/textView_salle"
+        android:layout_width="67dp"
+        android:layout_height="95dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginTop="16dp"
+        android:text="Salle:"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="#ffffff"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/textView_tempView"
+        android:layout_width="82dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="231dp"
+        android:layout_marginEnd="167dp"
+        android:layout_marginStart="167dp"
+        android:layout_marginTop="230dp"
+        android:text="20° C"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
+
+    <Button
+        android:id="@+id/button_backLogin"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="4dp"
+        android:background="#24c4b9"
+        android:text="Back"
+        android:textColor="#0b0b0b"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="HardcodedText" />
+
+    <Button
+        android:id="@+id/button_Graph"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="17dp"
+        android:layout_marginEnd="17dp"
+        android:text="Graph"
+        android:background="#24c4b9"
+        android:textColor="#0b0b0b"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="HardcodedText,RtlCompat" />
+
+    <Button
+        android:id="@+id/button_Plus"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="46dp"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="8dp"
+        android:text="Plus"
+        android:background="#24c4b9"
+        android:textColor="#0b0b0b"
+        app:layout_constraintBottom_toTopOf="@+id/button_Graph"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/textView_tempView"
+        app:layout_constraintTop_toBottomOf="@+id/textView_salle"
+        app:layout_constraintVertical_bias="0.413"
+        tools:ignore="HardcodedText,RtlCompat" />
+
+    <Button
+        android:id="@+id/button_minus"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="#24c4b9"
+        android:text="Minus"
+        android:textColor="#0b0b0b"
+        app:layout_constraintBottom_toTopOf="@+id/button_backLogin"
+        app:layout_constraintEnd_toStartOf="@+id/textView_tempView"
+        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_name"
+        app:layout_constraintVertical_bias="0.442"
+        tools:ignore="HardcodedText,RtlCompat" />
+
+    <Button
+        android:id="@+id/button_on_off"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="37dp"
+        android:layout_marginEnd="148dp"
+        android:layout_marginStart="148dp"
+        android:layout_marginTop="145dp"
+        android:text="ON"
+        android:background="#ffcc0000"
+        android:textColor="#0b0b0b"
+        app:layout_constraintBottom_toTopOf="@+id/textView_tempView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
+
+    <Button
+        android:id="@+id/button_mode"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="144dp"
+        android:layout_marginEnd="148dp"
+        android:layout_marginStart="148dp"
+        android:layout_marginTop="39dp"
+        android:text="Mode"
+        android:background="#24c4b9"
+        android:textColor="#0b0b0b"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_tempView"
+        tools:ignore="HardcodedText" />
+
+</android.support.constraint.ConstraintLayout>

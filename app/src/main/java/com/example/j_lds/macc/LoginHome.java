@@ -42,13 +42,13 @@ public class LoginHome extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Login login=new Login();
+                DoLogin login=new DoLogin();
                 login.execute();
             }
         });
     }
 
-    private class Login extends AsyncTask<String,String,String>
+    private class DoLogin extends AsyncTask<String,String,String>
     {
         String userStr = user.getText().toString();
         String passStr =pass.getText().toString();
@@ -104,7 +104,14 @@ public class LoginHome extends AppCompatActivity {
         }
         @Override
         protected void onPostExecute(String s) {
+            Toast.makeText(getBaseContext(),""+z,Toast.LENGTH_LONG).show();
 
+            if(isSuccess) {
+                Intent intent=new Intent(LoginHome.this,ClimHome.class);
+                intent.putExtra("user", userStr);
+                startActivity(intent);
+            }
+            progressDialog.hide();
         }
     }
 }

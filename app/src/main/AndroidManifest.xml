@@ -17,7 +17,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".ConnectionClass" />
-        <activity android:name=".ClimHome"></activity>
+        <activity android:name=".ClimHome" />
+        <activity android:name=".TemperatureGraph"></activity>
     </application>
 
 </manifest>

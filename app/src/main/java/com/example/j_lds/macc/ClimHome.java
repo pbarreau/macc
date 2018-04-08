@@ -1,6 +1,8 @@
 package com.example.j_lds.macc;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -8,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 
@@ -45,6 +48,7 @@ public class ClimHome extends AppCompatActivity {
         String name=getIntent().getStringExtra("user");
         nametext= (TextView) findViewById(R.id.textView_name);
         nametext.setText("Hello "+name);
+        //pass from loginHome the class(la sale) number where the user is suppose to be.
 
         //declare my buttons........................................................................
         button_ON_OFF = (Button) findViewById(R.id.button_on_off);
@@ -60,7 +64,7 @@ public class ClimHome extends AppCompatActivity {
             public void onClick(View view) {
                 on_Off();
             }
-        });/*
+        });
         button_PLUS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,7 +94,7 @@ public class ClimHome extends AppCompatActivity {
             public void onClick(View view) {
                 backLogin();
             }
-        });*/
+        });
     }
 
     protected void on_Off() {
@@ -120,5 +124,64 @@ public class ClimHome extends AppCompatActivity {
 
         }
     }
+
+    protected void plus(){
+        //button up.................................................................................
+        dataPass = "C";
+        myTask mt = new myTask();
+        mt.execute();
+    }
+
+    protected void minus(){
+        //button down...............................................................................
+        dataPass = "D";
+        myTask mt = new myTask();
+        mt.execute();
+    }
+
+    protected String mode(){
+        //button mode...............................................................................
+        String z = "This button is not yet available";
+        return z;
+/*
+        dataPass = "D";
+        myTask mt = new myTask();
+        mt.execute();
+        */
+    }
+
+    protected void tempGraph(){
+        //open the graph screen.....................................................................
+        Intent intent = new Intent(this, TemperatureGraph.class);
+        startActivity(intent);
+    }
+
+    protected void backLogin(){
+        //back......................................................................................
+        Intent intent = new Intent(this, LoginHome.class);
+        startActivity(intent);
+    }
+
+    private class myTask extends AsyncTask<Void, Void, Void>
+    {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                s = new Socket(hostTest, portTest);
+                pw = new PrintWriter(s.getOutputStream());
+                pw.write(dataPass);
+                pw.flush();
+                pw.close();
+                s.close();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+
 
 }

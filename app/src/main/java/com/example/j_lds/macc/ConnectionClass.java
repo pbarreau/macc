@@ -23,11 +23,11 @@ public class ConnectionClass{
 
     public Connection CONN() {
 
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-                .permitAll().build();
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         Connection conn = null;
         String ConnURL = null;
+
         try {
             //trying to connect to the database
             Class.forName(classs);
@@ -35,11 +35,11 @@ public class ConnectionClass{
             conn = DriverManager.getConnection(ConnURL);
 
         } catch (SQLException se) {
-            Log.e("ERRO", se.getMessage());
+            Log.e("ERRO_1...", se.getMessage());
         } catch (ClassNotFoundException e) {
-            Log.e("ERRO", e.getMessage());
+            Log.e("ERRO_2...", e.getMessage());
         } catch (Exception e) {
-            Log.e("ERRO", e.getMessage());
+            Log.e("ERRO_3...", e.getMessage());
         }
         return conn;
     }

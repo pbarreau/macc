@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.j_lds.macc">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,7 +20,7 @@
         </activity>
         <activity android:name=".ConnectionClass" />
         <activity android:name=".ClimHome" />
-        <activity android:name=".TemperatureGraph"></activity>
+        <activity android:name=".TemperatureGraph" />
     </application>
 
 </manifest>

@@ -16,9 +16,9 @@ public:
 
 private:
     void monLayout_NouveauClient(QWidget *fen);
+    bool eventFilter(QObject *, QEvent *);
 
 public slots:
-    void recoit_IP(QString IP2);  // en provenance de l'IHM et se connecte au serveur
     void emmettreVersServeur(QString t); // en provenance de l'IHM et écrit sur la socket
 
 private slots :

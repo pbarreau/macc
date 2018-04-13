@@ -48,6 +48,8 @@ void ClientTcp::monLayout_NouveauClient(QWidget *fen)
     QPushButton *qpb_send = new QPushButton("Envoyer");
     QPushButton *qpb_quit = new QPushButton("Quitter");
 
+    soc = NULL; // Pas de socket pour l'instant
+
     fly_srvInfo->addRow("Ip:",le_srvIp);
     fly_srvInfo->addRow("Port:",le_srvPort);
     vbl_top->addLayout(fly_srvInfo);
@@ -62,6 +64,7 @@ void ClientTcp::monLayout_NouveauClient(QWidget *fen)
     gdl_msg->addWidget(qpb_quit,2,0,1,2);
     gb_srvTest->setLayout(gdl_msg);
 
+    le_srvPort->setText("1024");
     le_showMsg->setEnabled(false);
     le_showMsg->setText("en attente...");
 
@@ -75,24 +78,11 @@ void ClientTcp::monLayout_NouveauClient(QWidget *fen)
     connect(qpb_send,SIGNAL(clicked(bool)),this,SLOT(slot_sendToSrv(bool)));
     connect(qpb_quit,SIGNAL(clicked(bool)),this,SLOT(slot_endOfTests(bool)));
 
+
     fen->setLayout(vbl_main);
     fen->setFixedSize(250,250);
 }
 
-
-void ClientTcp::slot_sendToSrv(bool click)
-{
-    Q_UNUSED(click);
-    QString msg = le_sendMsg->text();
-    emmettreVersServeur(msg);
-}
-
-void ClientTcp::slot_endOfTests(bool click)
-{
-    Q_UNUSED(click);
-    gb_srvTest->setEnabled(false);
-    gb_srvConf->setEnabled(true);
-}
 
 void ClientTcp::slot_openSrv(bool click)
 {
@@ -105,16 +95,6 @@ void ClientTcp::slot_openSrv(bool click)
     soc->connectToHost(srv,port); // pour se connecter au serveur
 }
 
-void ClientTcp::recoit_IP(QString IP2)
-{
-    IP=IP2;
-    soc->connectToHost(IP,port); // pour se connecter au serveur
-}
-void ClientTcp::emmettreVersServeur(QString t)
-{
-    QTextStream texte(soc); // on associe un flux à la socket
-    texte << t<<endl;        // on écrit dans le flux le texte saisi dans l'IHM
-}
 void ClientTcp::slot_connexionOK()
 {
     gb_srvTest->setVisible(true);
@@ -124,13 +104,62 @@ void ClientTcp::slot_connexionOK()
 
     emit vers_IHM_connexion_OK(); // on envoie un signal à l'IHM
 }
+
+void ClientTcp::slot_sendToSrv(bool click)
+{
+    Q_UNUSED(click);
+    QString msg = le_sendMsg->text();
+    emmettreVersServeur(msg);
+}
+
+void ClientTcp::emmettreVersServeur(QString t)
+{
+    QTextStream texte(soc); // on associe un flux à la socket
+    texte <<t<<endl;        // on écrit dans le flux le texte saisi dans l'IHM
+}
+
 void ClientTcp::slot_readFromSrv()
 {
     QString ligne;
     while(soc->canReadLine()) // tant qu'il y a quelque chose à lire dans la socket
     {
         ligne = soc->readLine();     // on lit une ligne
-        le_showMsg->setText(ligne);
         emit vers_IHM_texte(ligne); // on envoie à l'IHM
     }
+    le_showMsg->setText(ligne);
+}
+
+void ClientTcp::slot_endOfTests(bool click)
+{
+    Q_UNUSED(click);
+    if(soc!=NULL){
+        soc->close();
+        delete soc;
+    }
+    le_sendMsg->setText("");
+    le_showMsg->setText("en attente...");
+    gb_srvTest->setEnabled(false);
+    gb_srvConf->setEnabled(true);
+}
+
+bool ClientTcp::eventFilter(QObject *obj, QEvent *e)
+{
+    switch (e->type())
+     {
+         case QEvent::Close:
+         {
+             QMdiSubWindow * subWindow = (QMdiSubWindow*)(obj);
+             Q_ASSERT (subWindow != NULL);
+
+             if(soc!=NULL){
+                 soc->close();
+                 delete soc;
+             }
+
+             break;
+         }
+         default:
+             qt_noop();
+     }
+     return QObject::eventFilter(obj, e);
 }

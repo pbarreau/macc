@@ -2,6 +2,7 @@
 #include <QWidget>
 #include <QApplication>
 #include <QDesktopWidget>
+#include <QMdiSubWindow>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -39,9 +40,12 @@ MainWindow::~MainWindow()
 
 void MainWindow::pslot_newClient(void)
 {
+
     QWidget *qw_tmp = new QWidget;
     ClientTcp *unClientTcp = new ClientTcp(qw_tmp);
     Q_UNUSED(unClientTcp);
-    zoneCentrale->addSubWindow(qw_tmp);
+    QMdiSubWindow * subWindow = zoneCentrale->addSubWindow(qw_tmp);
     qw_tmp->setVisible(true);
+
+    subWindow->installEventFilter(unClientTcp);
 }

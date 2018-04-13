@@ -1,5 +1,8 @@
 #include <WiFi.h>
- 
+
+// Prototypes
+void pb_traiterClientWifi(void);
+
 const char* ssid = "HUAWEI-E5186-5D41";
 const char* password =  "NR7RFA0MA2J";
 
@@ -27,7 +30,11 @@ void setup() {
 }
  
 void loop() {
- 
+ pb_traiterClientWifi();
+}
+
+void pb_traiterClientWifi(void)
+{
   WiFiClient client = wifiServer.available();
  
   if (client) {

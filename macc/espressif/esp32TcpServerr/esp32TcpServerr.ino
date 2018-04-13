@@ -1,11 +1,16 @@
-//#include <string.h>
 #include <WiFi.h>
+
+// A suivre
+// https://42bots.com/tutorials/esp8266-example-wi-fi-access-point-web-server-static-ip-remote-control/
 
 // Prototypes
 void pb_traiterClientWifi(void);
 
 const char* ssid = "HUAWEI-E5186-5D41";
 const char* password =  "NR7RFA0MA2J";
+
+const char* assid = "espAccessPoint";
+const char* asecret = "hello";
 
 #define MAX_CLIENTS 10
 #define MAX_LINE_LENGTH 50
@@ -18,15 +23,27 @@ void setup() {
     
     Serial.begin(115200);
     delay(1000);
+    WiFi.mode(WIFI_AP_STA);
     
+    //access point part
+    Serial.println("Creation point d'access");
+    WiFi.softAP(assid);
+    Serial.print("IP address:\t");
+    Serial.println(WiFi.softAPIP());
+    
+    //station part
+    Serial.print("Connection a:");
+    Serial.println(ssid);
     WiFi.begin(ssid, password);
     
     while (WiFi.status() != WL_CONNECTED) {
         delay(1000);
-        Serial.println("Connecting to WiFi..");
+        Serial.println("Recherche...");
     }
     
-    Serial.println("Connected to the WiFi network");
+    Serial.print("Connection ok a:");
+    Serial.print(ssid);
+    Serial.print(",mon ip est:");
     Serial.println(WiFi.localIP());
     
     wifiServer.begin();
@@ -56,6 +73,8 @@ void pb_traiterClientWifi(void)
                 break;
             }
         }
+        //http://arduino-esp8266.readthedocs.io/en/latest/esp8266wifi/soft-access-point-class.html#softapgetstationnum
+        Serial.printf("Stations actuellement connecte par soft-AP = %d\n\r", WiFi.softAPgetStationNum());
     }
     
     // est ce qu'un client nous a contacte ?

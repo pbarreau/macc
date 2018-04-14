@@ -1,4 +1,14 @@
 #include <WiFi.h>
+#include <MySQL_Connection.h>
+#include <MySQL_Cursor.h>
+
+WiFiClient client; // Use this for WiFi instead of EthernetClient
+MySQL_Connection conn((Client *)&client);
+
+byte mac_addr[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
+IPAddress server_addr(192,168,0,22);  // IP of the MySQL *server* here
+char mysql_user[] = "pascal";              // MySQL user login username
+char mysql_pass[] = "pascal";        // MySQL user login password
 
 // A suivre
 // https://42bots.com/tutorials/esp8266-example-wi-fi-access-point-web-server-static-ip-remote-control/
@@ -6,8 +16,11 @@
 // Prototypes
 void pb_traiterClientWifi(void);
 
-const char* ssid = "HUAWEI-E5186-5D41";
-const char* password =  "NR7RFA0MA2J";
+//const char* ssid = "HUAWEI-E5186-5D41";
+//const char* password =  "NR7RFA0MA2J";
+
+const char* ssid = "Eminent";
+const char* password =  "";
 
 const char* assid = "espAccessPoint";
 const char* asecret = "hello";
@@ -47,6 +60,17 @@ void setup() {
     Serial.println(WiFi.localIP());
     
     wifiServer.begin();
+    
+    Serial.println("Mysql test...");
+    if (conn.connect(server_addr, 3306, mysql_user, mysql_pass)) {
+        delay(1000);
+        Serial.println("Connection reussie...");
+    }
+    else
+        Serial.println("Connection failed.");
+    
+    conn.close();
+    
 }
 
 //----------------------------------------------------------

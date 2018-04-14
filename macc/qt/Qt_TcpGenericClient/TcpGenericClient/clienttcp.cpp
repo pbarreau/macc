@@ -11,6 +11,7 @@
 
 int ClientTcp::total = 0;
 
+//https://qt.developpez.com/tutoriels/reseau/
 ClientTcp::ClientTcp(QObject *parent) : QObject(parent)
 {
     fen = qobject_cast<QWidget*>(parent);
@@ -142,6 +143,7 @@ void ClientTcp::slot_endOfTests(bool click)
     gb_srvConf->setEnabled(true);
 }
 
+//https://stackoverflow.com/questions/8818297/qt-how-to-know-when-a-qmdisubwindow-is-closed
 bool ClientTcp::eventFilter(QObject *obj, QEvent *e)
 {
     switch (e->type())

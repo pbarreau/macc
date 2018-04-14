@@ -21,3 +21,5 @@ HEADERS  += mainwindow.h \
     clienttcp.h
 
 FORMS    += mainwindow.ui
+#INSTALLS +=target
+CONFIG += mobility

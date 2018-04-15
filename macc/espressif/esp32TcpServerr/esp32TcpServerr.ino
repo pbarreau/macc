@@ -3,6 +3,10 @@
 #include <MySQL_Cursor.h>
 
 
+// https://github.com/esp8266/Arduino/issues/2100
+#include <esp_event.h>
+#include <esp_event_loop.h>
+
 /*
  * AUTEUR : P.BARREAU
  * DATE   : 14/04/2018
@@ -20,7 +24,7 @@
  * Le code permet d'avoir 10 clients TCP maxi (tester si reellement possible)
  * chaque client TCP utilise LA connexion MariaDb pour y mettre ses donnees
  */
- 
+
 // Voir exemple MySQL Connector
 /*
  * Pour utiliser les acces a la base de donnees: sur le serveur de bases :
@@ -60,8 +64,13 @@ void pb_traiterClientWifi(void);
 void pb_traiterSql(int cId, char *msg);
 double pb_obtenirUneValeurDeCapteur(void);
 void pb_trouverMsgUtilisateur(int user);
+void pb_determinerClients(void);
+boolean deviceIP(char* mac_device, String &cb);
 // ==========================================
-
+static void initialiserHandler(void);
+static esp_err_t event_handler(void *ctx, system_event_t *event);
+static esp_err_t event_UneStationSeConnecte(void *ctx, system_event_t *event);
+static esp_err_t event_onNewStation(void *ctx, system_event_t *event);
 
 // ==== Config de la borne Maison ===========
 //const char* ssid = "HUAWEI-E5186-5D41";
@@ -82,9 +91,45 @@ WiFiServer wifiServer(USE_PORT);
 WiFiClient *clients[MAX_CLIENTS] = { NULL };
 char inputs[MAX_CLIENTS][MAX_LINE_LENGTH] = { 0 };
 
-// ======== Code Arduino ================
-void setup() {
+// ================ Gestion des events =================
+boolean waitingDHCP=false;
+char last_mac[18];
+
+void initialiserHandler(void)
+{
+    //ESP_ERROR_CHECK( esp_event_loop_init(event_handler, NULL) );
+    esp_event_loop_set_cb(event_onNewStation,NULL);
+}
+
+// =====
+esp_err_t event_handler(void *ctx, system_event_t *event)
+{ 
+    return ESP_OK;
+}
+
+// =====
+// Manage incoming device connection on ESP access point
+esp_err_t event_onNewStation(void *ctx, system_event_t *event) {
+    system_event_ap_staconnected_t sta_info;
     
+    if(event->event_id == SYSTEM_EVENT_AP_STACONNECTED || event->event_id == SYSTEM_EVENT_AP_STADISCONNECTED){
+        sta_info = event->event_info.sta_connected;
+
+        if(event->event_id == SYSTEM_EVENT_AP_STACONNECTED){
+        Serial.print("Nouveau bail wifi, ");
+        }
+        else{
+        Serial.print("Deconnexion, ");
+        }
+        sprintf(last_mac,"%02X:%02X:%02X:%02X:%02X:%02X", MAC2STR(sta_info.mac));
+        Serial.printf("address MAC: %s,",last_mac);
+        Serial.printf("id: %d\n\r", sta_info.aid);
+        waitingDHCP=true;
+    }
+    return ESP_OK;
+}
+// =====================================================
+void setup() {
     Serial.begin(115200);
     delay(1000);
     
@@ -114,7 +159,7 @@ void setup() {
     
     // Serveur TCP demarre
     wifiServer.begin();
-
+    
     // Connexion a Maria DB
     Serial.println("Mysql test...");
     if (conn.connect(server_addr, 3306, mysql_user, mysql_pass)) {
@@ -127,12 +172,15 @@ void setup() {
     
     // initialisation d'un seed pour les nombres aleatoires
     randomSeed(analogRead(0));
-    
+
+    // Mise en place du handler
+    initialiserHandler();
 }
 
 //----------------------------------------------------------
 void loop() {
     pb_traiterClientWifi();
+    //pb_determinerClients();
 }
 //----------------------------------------------------------
 
@@ -145,7 +193,7 @@ void pb_traiterClientWifi(void)
     
     if (unClient) {
         // oui
-        Serial.print("Nouveau client wifiId:");
+        Serial.print("Nouveau client tcp :");
         // memoriser son idWifi qqpart
         for (int i=0 ; i<MAX_CLIENTS ; ++i) {
             if (clients[i]==NULL) {
@@ -187,7 +235,7 @@ void pb_traiterClientWifi(void)
             
             // terminer la chaine (on enleve "\r")
             inputs[i][posChar-1]='\0';
-
+            
             // Gerer la comm avec Maria DB
             pb_traiterSql(i,inputs[i]);
         }
@@ -285,3 +333,43 @@ void pb_trouverMsgUtilisateur(int user)
     // Deleting the cursor also frees up memory used
     delete cur_mem;    
 }
+
+#if 0
+// https://github.com/esp8266/Arduino/issues/2100
+void pb_determinerClients(void)
+{
+    if (waitingDHCP) {
+        String cb;
+        if (deviceIP(last_mac,cb)) {
+            Serial.println("Ip address :");
+            Serial.println(cb); //do something
+        } else {
+            Serial.println("Problem during ip address request :");
+            Serial.println(cb); //do something else
+        }
+    }
+}
+
+
+boolean deviceIP(char* mac_device, String &cb) {
+    
+    struct station_info *station_list = wifi_softap_get_station_info();
+    
+    while (station_list != NULL) {
+        char station_mac[18] = {0}; sprintf(station_mac, "%02X:%02X:%02X:%02X:%02X:%02X", MAC2STR(station_list->bssid));
+        String station_ip = IPAddress((&station_list->ip)->addr).toString();
+        
+        if (strcmp(mac_device,station_mac)==0) {
+            waitingDHCP=false;
+            cb = station_ip;
+            return true;
+        } 
+        
+        station_list = STAILQ_NEXT(station_list, next);
+    }
+    
+    wifi_softap_free_station_info();
+    cb = "DHCP not ready or bad MAC address";
+    return false;
+}
+#endif

@@ -7,6 +7,10 @@
 #include <esp_event.h>
 #include <esp_event_loop.h>
 
+#define ledPin  2
+#define ledSetOff LOW
+#define ledSetOn HIGH
+
 /*
  * AUTEUR : P.BARREAU
  * DATE   : 14/04/2018
@@ -92,6 +96,8 @@ WiFiClient *clients[MAX_CLIENTS] = { NULL };
 char inputs[MAX_CLIENTS][MAX_LINE_LENGTH] = { 0 };
 
 // ================ Gestion des events =================
+// http://blog.podkalicki.com/esp32-wifi-sniffer/
+// http://www.instructables.com/id/ESP32-Remote-Control-With-Sockets/
 boolean waitingDHCP=false;
 char last_mac[18];
 
@@ -132,7 +138,11 @@ esp_err_t event_onNewStation(void *ctx, system_event_t *event) {
 void setup() {
     Serial.begin(115200);
     delay(1000);
-    
+
+    pinMode(ledPin, OUTPUT);
+    digitalWrite(ledPin, ledSetOn);
+    //delay(500);
+     
     // Carte en Point d'acces ET en station (vers un autre point d'acces)
     WiFi.mode(WIFI_AP_STA);
     
@@ -175,6 +185,8 @@ void setup() {
 
     // Mise en place du handler
     initialiserHandler();
+
+    digitalWrite(ledPin, ledSetOff);
 }
 
 //----------------------------------------------------------

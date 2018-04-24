@@ -22,7 +22,7 @@
 
     <TextView
         android:id="@+id/textView_salle"
-        android:layout_width="67dp"
+        android:layout_width="104dp"
         android:layout_height="95dp"
         android:layout_marginEnd="36dp"
         android:layout_marginTop="16dp"
@@ -51,20 +51,20 @@
         tools:ignore="HardcodedText" />
 
     <Button
-        android:id="@+id/button_backLogin"
+        android:id="@+id/button_back"
         android:layout_width="100dp"
         android:layout_height="50dp"
         android:layout_marginBottom="16dp"
         android:layout_marginStart="4dp"
         android:background="#24c4b9"
-        android:text="Back"
+        android:text="Exit"
         android:textColor="#0b0b0b"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="HardcodedText" />
 
     <Button
-        android:id="@+id/button_Graph"
+        android:id="@+id/button_ok"
         android:layout_width="100dp"
         android:layout_height="50dp"
         android:layout_marginBottom="17dp"
@@ -87,7 +87,7 @@
         android:text="Plus"
         android:background="#24c4b9"
         android:textColor="#0b0b0b"
-        app:layout_constraintBottom_toTopOf="@+id/button_Graph"
+        app:layout_constraintBottom_toTopOf="@+id/button_ok"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/textView_tempView"
@@ -106,7 +106,7 @@
         android:background="#24c4b9"
         android:text="Minus"
         android:textColor="#0b0b0b"
-        app:layout_constraintBottom_toTopOf="@+id/button_backLogin"
+        app:layout_constraintBottom_toTopOf="@+id/button_back"
         app:layout_constraintEnd_toStartOf="@+id/textView_tempView"
         app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
@@ -135,17 +135,29 @@
         android:id="@+id/button_mode"
         android:layout_width="100dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="144dp"
-        android:layout_marginEnd="148dp"
-        android:layout_marginStart="148dp"
-        android:layout_marginTop="39dp"
-        android:text="Mode"
+        android:layout_marginBottom="128dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="8dp"
         android:background="#24c4b9"
+        android:text="Mode"
         android:textColor="#0b0b0b"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_tempView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
         tools:ignore="HardcodedText" />
+
+    <Spinner
+        android:id="@+id/spinner_clim"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginTop="8dp"
+        android:background="#24c4b9"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.73" />
 
 </android.support.constraint.ConstraintLayout>

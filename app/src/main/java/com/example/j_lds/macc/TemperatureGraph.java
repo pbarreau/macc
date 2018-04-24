@@ -15,31 +15,47 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 public class TemperatureGraph extends AppCompatActivity {
     LineGraphSeries<DataPoint> series;
-    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("mm:ss");
+    SimpleDateFormat sdf = new java.text.SimpleDateFormat("hh:mm");
 
-    //values which will have the db last four temperatures..........................................
-    private static int one;
-    private static int two;
-    private static int three;
-    private static int four;
-
-    private static int heur1;
-    private static int heur2;
-    private static int heur3;
-    private static int heur4;
-
-
-    ProgressDialog progressDialog;
-    ConnectionClass connectionClass;
-    Button button_BACK;
+    //my attributes
+    //values which i will get the last 4 temperatures from the db...................................
+    private static double temperature1;
+    private static double temperature2;
+    private static double temperature3;
+    private static double temperature4;
+    //values which i will get the last 4 times of each temperatures from the db.....................
+    private static Time tempTime1;
+    private static Time tempTime2;
+    private static Time tempTime3;
+    private static Time tempTime4;
+    //declaration of my constructors................................................................
+    private ProgressDialog progressDialog;
+    private ConnectionClass connectionClass;
+    //declare my button_BACK........................................................................
+    private Button button_BACK;
+    //the constructors..............................................................................
+    private ArrayList<Double> tableTemp = new ArrayList<Double>();
+    private ArrayList<Time> tableTime = new ArrayList<Time>();
+    //a string date that will have the current day..................................................
+    private String date;
+    //a string message that will inform the user....................................................
+    private String message = "";
+    //a variable that i can verify the success before the graph creation............................
+    private boolean isSuccess = false;
+    //a string to store the name of the c\lass.......................................................
+    private String salleName; //= "BATV";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,26 +66,66 @@ public class TemperatureGraph extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-
-
+        //initialize my constructors................................................................
         connectionClass = new ConnectionClass();
         progressDialog=new ProgressDialog(this);
         button_BACK = (Button)findViewById(R.id.button_backHome);
+        //set a click listener to my back...........................................................
         button_BACK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                backHome();
+                e4Csg1MACC_backHome();
             }
         });
+
+        //get current date and store it in string date..............................................
+        date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+
+        //get the "Salle" by ssid fom ClimHome.class................................................
+        ClimHome climHome = new ClimHome();
+        salleName = climHome.e4Csg1MACC_getWifiSSID();
+
+        //(execute) find temperature, time values in db and show the graph..........................
+        E4cBackground e4Task = new E4cBackground();
+        e4Task.execute();
     }
 
-    class myTask extends AsyncTask<Void, Void, String>
-    {
-        String z = "";
-        boolean show = false;
-        boolean isSuccess = false;
-        boolean isSuccess1 = false;
+    private void e4Csg1MACC_sqlQuery() throws SQLException {
+        //open a connection.........................................................................
+        Connection con = connectionClass.e4Csg1MACC_CONN();
+        //test the connection.......................................................................
+        if (con == null) {
+            message = "Please check your internet connection";
+        } else {
+            //prepare a query and a statement.......................................................
+            //i need to get four temperatures and their hours and place them from recent to dated...
+            String query = "select TEMPERATURE,HEURE from SALLE where NOM_SALLE = '"+salleName+"' and DATE_JOUR = '"+date+"' order by HEURE"; //2018-04-10
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
 
+            //
+            while(rs.next()){
+                tableTemp.add(rs.getDouble(1));
+                tableTime.add(rs.getTime(2));
+
+            }
+            isSuccess = true;
+            //affect the four recent values to my temperature variables from the ArrayList..........
+            temperature1 = tableTemp.get(0);
+            temperature2 = tableTemp.get(1);
+            temperature3 = tableTemp.get(2);
+            temperature4 = tableTemp.get(3);
+
+            //affect the four recent values to my temperature variables from the ArrayList..........
+            tempTime1 = tableTime.get(0);
+            tempTime2 = tableTime.get(1);
+            tempTime3 = tableTime.get(2);
+            tempTime4 = tableTime.get(3);
+        }
+    }
+
+    class E4cBackground extends AsyncTask<Void, Void, String>
+    {
         @Override
         protected void onPreExecute() {
 
@@ -82,93 +138,67 @@ public class TemperatureGraph extends AppCompatActivity {
         @Override
         protected String doInBackground(Void... voids) {
             try {
-                Connection con = connectionClass.CONN();
-                if (con == null) {
-                    z = "Please check your internet connection";
-                } else {
-
-                    String query = " select TEMPERATURE from SALLE";
-                    Statement stmt = con.createStatement();
-                    //stmt.executeUpdate(query);
-                    ResultSet rs = stmt.executeQuery(query);
-
-                    while (rs.next()) {
-                        one = rs.getInt(0);
-                        two = rs.getInt(1);
-                        three = rs.getInt(2);
-                        four = rs.getInt(3);
-
-                        isSuccess = true;
-                    }
-
-                    String query1 = "select HEURE from SALLE";
-                    Statement stmt1 = con.createStatement();
-                    ResultSet rs1 = stmt.executeQuery(query1);
-
-                    while (rs1.next()){
-                        heur1 = rs1.getInt(0);
-                        heur2 = rs1.getInt(1);
-                        heur3 = rs1.getInt(2);
-                        heur4 = rs1.getInt(3);
-
-                        isSuccess1 = true;
-                    }
-
-                    if (isSuccess && isSuccess1) {
-                        show = true;
-                        z = "Graph loaded";
-                    } else {
-                        show = false;
-                    }
-                }
+                e4Csg1MACC_sqlQuery();
             }catch (Exception ex){
-                z = "Exceptions......" + ex;
+                message = "Exceptions......" + ex;
             }
-            return z;
+            return message;
         }
+
         @Override
         protected void onPostExecute(String s){
-            Toast.makeText(getBaseContext(),""+z,Toast.LENGTH_LONG).show();
-            if (show){
+            //if isSuccess is true than represent the graph and warn the user.......................
+            //or warn the user the graph did not loaded.............................................
+            if (isSuccess) {
+                //find my Graph id from the xml file................................................
+                //create an object series ..........................................................
+                //add the points using series and show on graph.....................................
                 GraphView graph = (GraphView)findViewById(R.id.Graph);
-                series = new LineGraphSeries<DataPoint>(getDataPoint());
+                series = new LineGraphSeries<DataPoint>(e4Csg1MACC_getDataPoint());
                 graph.addSeries(series);
-                graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter(){
-                    @Override
-                    public String formatLabel(double value, boolean isValueX) {
-                        if(isValueX){
-                            return sdf.format(new Date((long)value));
-                        }
-                        return super.formatLabel(value, isValueX);
-                    }
-                });
+
+                //show the time in a time format hh:mm
+        graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter(){
+            @Override
+            public String formatLabel(double value, boolean isValueX) {
+                if(isValueX){
+                    return sdf.format(new Date((long)value));
+                }
+                return super.formatLabel(value, isValueX);
+            }
+        });
+
                 // graph.getGridLabelRenderer().setNumHorizontalLabels(10);
                 graph.getViewport().setScalable(true);
                 Viewport viewport = graph.getViewport();
                 viewport.setYAxisBoundsManual(true);
-                viewport.setMinY(0);
-                viewport.setMaxY(30);
+//                viewport.setMinY(0);
+//                viewport.setMaxY(30);
 
-                //getDataPoint();
+                e4Csg1MACC_getDataPoint();
+
+                message = "Graph loaded";
+            }else{
+                message = "Graph failed to loaded";
             }
+            Toast.makeText(getBaseContext(),""+ message,Toast.LENGTH_LONG).show();
+            progressDialog.hide();
         }
     }
 
-    //
-    public DataPoint[] getDataPoint() {
+    public DataPoint[] e4Csg1MACC_getDataPoint() {
         DataPoint[] dp = new DataPoint[]{
-                new DataPoint(heur1,one),      //new DataPoint(new Date().getTime(),1),
-                new DataPoint(heur2,two),    //new DataPoint(heur,valeur),
-                new DataPoint(heur3,three),
-                new DataPoint(heur4,four)
+                new DataPoint(tempTime1, temperature1),    //new DataPoint(new Date().getTime(),1),
+                new DataPoint(tempTime2, temperature2),    //new DataPoint(heur,valeur),
+                new DataPoint(tempTime3, temperature3),
+                new DataPoint(tempTime4, temperature4)
         };
         return (dp);
     }
 
-    public void backHome(){
+    public void e4Csg1MACC_backHome(){
         Intent intent;
         intent = new Intent(this, ClimHome.class);
         startActivity(intent);
     }
-
 }

@@ -3,6 +3,10 @@
     package="com.example.j_lds.macc">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <application
         android:allowBackup="true"
@@ -21,6 +25,7 @@
         <activity android:name=".ConnectionClass" />
         <activity android:name=".ClimHome" />
         <activity android:name=".TemperatureGraph" />
+        <activity android:name=".findSalleClim"></activity>
     </application>
 
 </manifest>

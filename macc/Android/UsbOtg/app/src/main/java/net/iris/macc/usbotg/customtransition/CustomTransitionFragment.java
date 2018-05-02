@@ -17,6 +17,7 @@
 package net.iris.macc.usbotg.customtransition;
 
 import android.content.Context;
+import android.hardware.usb.UsbDevice;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.transition.Scene;
@@ -28,6 +29,8 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import net.iris.macc.usbotg.common.logger.Log;
+
+import static net.iris.macc.usbotg.customtransition.MainActivity.PBAR_AskUser;
 
 public class CustomTransitionFragment extends Fragment implements View.OnClickListener {
 
@@ -84,9 +87,14 @@ public class CustomTransitionFragment extends Fragment implements View.OnClickLi
         switch (v.getId()) {
             case R.id.show_next_scene: {
                 mCurrentScene = (mCurrentScene + 1) % mScenes.length;
-                Log.i(TAG, "Transitioning to scene #" + mCurrentScene);
+                Log.i(TAG, "Changement vers scene #" + mCurrentScene);
                 // Pass the custom Transition as second argument for TransitionManager.go
                 TransitionManager.go(mScenes[mCurrentScene], mTransition);
+                break;
+            }
+            case R.id.button4: {
+                Log.i(TAG,"Demande autorisation");
+                PBAR_AskUser();
                 break;
             }
         }

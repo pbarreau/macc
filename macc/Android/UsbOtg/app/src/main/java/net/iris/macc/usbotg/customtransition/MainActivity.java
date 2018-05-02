@@ -17,7 +17,12 @@
 
 package net.iris.macc.usbotg.customtransition;
 
+
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
@@ -46,9 +51,43 @@ import net.iris.macc.usbotg.common.logger.MessageOnlyLogFilter;
 public class MainActivity extends SampleActivityBase {
 
     public static final String TAG = "MainActivity";
+    private static UsbManager mUsbManager;
+    private  static PendingIntent mPermissionIntent;
+    private static Intent My_intent;
 
+    private static final String ACTION_USB_PERMISSION = "com.android.example.USB_PERMISSION";
+    private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
+
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+
+            My_intent = intent;
+
+            if (ACTION_USB_PERMISSION.equals(action)) {
+                synchronized (this) {
+                    UsbDevice device = (UsbDevice)intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
+
+                    if (intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false)) {
+                        if(device != null){
+                            //call method to set up device communication
+                            Log.d(TAG, "Executer le code de traitement " + device);
+                        }
+                    }
+                    else {
+                        Log.d(TAG, "permission denied for device " + device);
+                    }
+                }
+            }
+        }
+    };
     // Whether the Log Fragment is currently shown
     private boolean mLogShown;
+
+    public static void PBAR_AskUser(){
+
+        UsbDevice device =(UsbDevice) My_intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
+        mUsbManager.requestPermission(device, mPermissionIntent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +100,11 @@ public class MainActivity extends SampleActivityBase {
             transaction.replace(R.id.sample_content_fragment, fragment);
             transaction.commit();
         }
+        //--------
+         mUsbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
+         mPermissionIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_USB_PERMISSION), 0);
+        IntentFilter filter = new IntentFilter(ACTION_USB_PERMISSION);
+        registerReceiver(mUsbReceiver, filter);
     }
 
     public void PBAR_EnumerateDevices()

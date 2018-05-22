@@ -2,6 +2,7 @@ package com.example.j_lds.macc;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -155,6 +156,7 @@ public class TemperatureGraph extends AppCompatActivity {
                 //add the points using series and show on graph.....................................
                 GraphView graph = (GraphView)findViewById(R.id.Graph);
                 series = new LineGraphSeries<DataPoint>(e4Csg1MACC_getDataPoint());
+                series.setBackgroundColor(Color.RED);
                 graph.addSeries(series);
 
                 //show the time in a time format hh:mm

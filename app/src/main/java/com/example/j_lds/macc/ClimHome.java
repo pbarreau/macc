@@ -9,7 +9,6 @@ import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -62,7 +61,7 @@ public class ClimHome extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         String name = getIntent().getStringExtra("user");
-        nameText = (TextView) findViewById(R.id.textView_name);
+        nameText = (TextView) findViewById(R.id.textView_nameHome);
         nameText.setText("Hello\n"+name);
         ///////////////////////////////////////////////////////////////////////////////////////////////
         nameSalle = (TextView)findViewById(R.id.textView_salle);

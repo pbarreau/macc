@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/holo_blue_dark"
+    tools:context=".FullRemote">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/mindPage"
+        android:layout_width="0dp"
+        android:layout_height="210dp"
+        android:background="@android:color/holo_blue_light"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView_symbol"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginBottom="40dp"
+            android:text="°C"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Display1"
+            android:textColor="@android:color/background_light"
+            android:textSize="36sp"
+            android:textStyle="bold"
+            app:fontFamily="cursive"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView_tempNumber_FullRemote"
+            app:layout_constraintTop_toBottomOf="@+id/textView_classNameFullRemote"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/textView_tempNumber_FullRemote"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginBottom="40dp"
+            android:layout_marginLeft="75dp"
+            android:layout_marginStart="75dp"
+            android:text="26"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Display1"
+            android:textColor="@android:color/background_light"
+            android:textStyle="bold"
+            app:fontFamily="cursive"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_classNameFullRemote"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/textView_className_FullRemote"
+            android:layout_width="126dp"
+            android:layout_height="45dp"
+            android:layout_marginLeft="65dp"
+            android:layout_marginStart="65dp"
+            android:fontFamily="cursive"
+            android:text="Class :"
+            android:textColor="@android:color/background_light"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_name_FullRemote" />
+
+        <TextView
+            android:id="@+id/textView_screenTitle1_FullRemote"
+            android:layout_width="40dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="125dp"
+            android:layout_marginStart="125dp"
+            android:layout_marginTop="15dp"
+            android:fontFamily="cursive"
+            android:text="Home"
+            android:textColor="@android:color/background_light"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView_screenTitle2_FullRemote"
+            android:layout_width="75dp"
+            android:layout_height="20dp"
+            android:layout_marginBottom="175dp"
+            android:layout_marginTop="15dp"
+            android:fontFamily="cursive"
+            android:text="Full Remote"
+            android:textColor="@android:color/background_light"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView_screenTitle1_FullRemote"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView_name_FullRemote"
+            android:layout_width="126dp"
+            android:layout_height="45dp"
+            android:layout_marginLeft="65dp"
+            android:layout_marginStart="65dp"
+            android:text="Hello"
+            android:textColor="@android:color/background_light"
+            app:fontFamily="cursive"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_screenTitle1_FullRemote" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/textView_acNameStatusP1"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginLeft="42dp"
+        android:layout_marginStart="42dp"
+        android:fontFamily="cursive"
+        android:text="AC : "
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textColor="#fff"
+        app:layout_constraintBottom_toTopOf="@+id/floatingActionButton_power"
+        app:layout_constraintStart_toEndOf="@+id/button_plus"
+        tools:ignore="HardcodedText,UnusedAttribute" />
+
+    <Button
+        android:id="@+id/button_plus"
+        style="@style/Base.TextAppearance.AppCompat.Display1"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="44dp"
+        android:layout_marginStart="44dp"
+        android:background="@drawable/triangle_button"
+        android:text="+"
+        android:textColor="#000"
+        app:layout_constraintBottom_toTopOf="@+id/button_temp"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="HardcodedText,UnusedAttribute" />
+
+    <Button
+        android:id="@+id/button_minus"
+        style="@style/Base.TextAppearance.AppCompat.Display1"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="44dp"
+        android:layout_marginStart="44dp"
+        android:background="@drawable/triangle_button"
+        android:rotation="180"
+        android:text="-"
+        android:textColor="#000"
+        app:layout_constraintBottom_toTopOf="@+id/downPageApp"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="HardcodedText,UnusedAttribute" />
+
+    <Button
+        android:id="@+id/button_swing-V"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/round_button"
+        android:text="Swing-V"
+        app:layout_constraintBottom_toTopOf="@+id/button_sleep"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="HardcodedText,UnusedAttribute" />
+
+    <Button
+        android:id="@+id/button_sleep"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/round_button"
+        android:text="Sleep"
+        app:layout_constraintBottom_toTopOf="@+id/downPageApp"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="HardcodedText,UnusedAttribute" />
+
+    <Button
+        android:id="@+id/button_swing-H"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/round_button"
+        android:text="Swing-H"
+        app:layout_constraintBottom_toTopOf="@+id/button_swing-V"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="HardcodedText,UnusedAttribute" />
+
+    <Button
+        android:id="@+id/button_turbo"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginLeft="42dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginStart="42dp"
+        android:background="@drawable/round_button"
+        android:text="Turbo"
+        app:layout_constraintBottom_toTopOf="@+id/downPageApp"
+        app:layout_constraintEnd_toStartOf="@+id/button_sleep"
+        app:layout_constraintStart_toEndOf="@+id/button_minus"
+        tools:ignore="HardcodedText,UnusedAttribute" />
+
+    <Button
+        android:id="@+id/button_fanSpeed"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/round_button"
+        android:text="Fan Speed"
+        app:layout_constraintBottom_toTopOf="@+id/button_swing-H"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="HardcodedText,UnusedAttribute" />
+
+    <Button
+        android:id="@+id/button_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginLeft="26dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginStart="26dp"
+        android:background="@drawable/round_button"
+        android:text="Mode"
+        app:layout_constraintBottom_toTopOf="@+id/button_turbo"
+        app:layout_constraintEnd_toStartOf="@+id/button_swing-V"
+        app:layout_constraintStart_toEndOf="@+id/button_timer"
+        tools:ignore="HardcodedText,UnusedAttribute" />
+
+    <Button
+        android:id="@+id/button_temp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="22dp"
+        android:layout_marginStart="22dp"
+        android:background="@drawable/button_round_top"
+        android:text="Temp"
+        app:layout_constraintBottom_toTopOf="@+id/button_timer"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="HardcodedText,UnusedAttribute" />
+
+    <Button
+        android:id="@+id/button_timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="22dp"
+        android:layout_marginStart="22dp"
+        android:background="@drawable/button_round_down"
+        android:text="Timer"
+        app:layout_constraintBottom_toTopOf="@+id/button_minus"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="HardcodedText,UnusedAttribute" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingActionButton_power"
+        android:layout_width="77dp"
+        android:layout_height="65dp"
+        android:layout_marginBottom="40dp"
+        android:layout_marginEnd="103dp"
+        android:layout_marginStart="92dp"
+        android:clickable="true"
+        android:tint="@android:color/holo_purple"
+        app:backgroundTint="@android:color/background_light"
+        app:layout_constraintBottom_toTopOf="@+id/button_mode"
+        app:layout_constraintEnd_toStartOf="@+id/button_swing-H"
+        app:layout_constraintStart_toEndOf="@+id/button_temp"
+        app:rippleColor="@android:color/holo_red_dark"
+        app:srcCompat="@android:drawable/ic_lock_power_off"
+        tools:ignore="KeyboardInaccessibleWidget" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/downPageApp"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:background="#000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/floatingActionButton_FullRemoteExit"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="66dp"
+            android:layout_marginLeft="65dp"
+            android:layout_marginRight="66dp"
+            android:layout_marginStart="65dp"
+            android:clickable="true"
+            android:tint="@android:color/holo_blue_bright"
+            app:backgroundTint="@android:color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/floatingActionButton_settings"
+            app:layout_constraintStart_toEndOf="@+id/floatingActionButton_homeGraph"
+            app:layout_constraintTop_toTopOf="parent"
+            app:rippleColor="@android:color/holo_blue_bright"
+            app:srcCompat="@android:drawable/ic_notification_clear_all" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/floatingActionButton_settingsFullRemote"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginRight="50dp"
+            android:clickable="true"
+            android:tint="@android:color/holo_blue_bright"
+            app:backgroundTint="@android:color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:rippleColor="@android:color/holo_blue_bright"
+            app:srcCompat="@mipmap/ic_jlsetting_app_foreground" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/floatingActionButton_homeGraph"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginStart="50dp"
+            android:clickable="true"
+            android:tint="@android:color/holo_blue_bright"
+            app:backgroundTint="@android:color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:rippleColor="@android:color/holo_blue_bright"
+            app:srcCompat="@mipmap/ic_jlgraph_app_foreground" />
+    </android.support.constraint.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/textView_acNameStatusP2"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:text="Off"
+        android:textColor="@android:color/background_light"
+        app:fontFamily="cursive"
+        app:layout_constraintBottom_toTopOf="@+id/floatingActionButton_power"
+        app:layout_constraintStart_toEndOf="@+id/textView_acNameStatusP1" />
+
+
+</android.support.constraint.ConstraintLayout>

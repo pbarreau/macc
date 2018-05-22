@@ -3,14 +3,13 @@ package com.example.j_lds.macc;
 
 import android.os.StrictMode;
 import android.util.Log;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 //hostname local 192.168.13.91
 // local db 192.168.137.127
-//hostname distant 93.121.229.118
+//hostname distant 93.121.180.47
 // db user MACC
 //user pi
 //passDB Simconolat
@@ -18,7 +17,7 @@ import java.sql.SQLException;
 public class ConnectionClass{
     //mes attribustes
     private String classs = "com.mysql.jdbc.Driver";
-    private String url = "jdbc:mysql://192.168.137.127/MACC";
+    private String url = "jdbc:mysql://93.121.180.47/MACC";
     private String userName = "pi";
     private String password = "Simconolat";
 

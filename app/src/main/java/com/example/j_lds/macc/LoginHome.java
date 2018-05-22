@@ -19,7 +19,6 @@ import java.sql.Statement;
 import android.util.Log;
 
 public class LoginHome extends AppCompatActivity {
-
     //Attributes....................................................................................
     private EditText user,pass;
     private Button login;
@@ -68,9 +67,6 @@ public class LoginHome extends AppCompatActivity {
                 login.execute();
             }
         });
-    }
-
-    private void onListenLanguage(){
 
     }
 
@@ -83,12 +79,12 @@ public class LoginHome extends AppCompatActivity {
             if (con == null) {
                 message = "Please check your internet connection";
             } else {
-                /*if the connexion exist then :
-                * prepare a query
-                * execute the query
-                * find and match the credentials entered and stored in the db
-                *       -if found, show a message saying "login successfully"
-                *       -if not, show a message "Error credential...not match!!!"...................*/
+                //if the connexion exist then :
+                //prepare a query
+                //execute the query
+                //find and match the credentials entered and stored in the db
+                //      -if found, show a message saying "login successfully"
+                //      -if not, show a message "Error credential...not match!!!"...................
 
                 String query = " select * from PROFESSEUR where NOM = '"+userStr+"' and MDP = '"+passStr+"'";
                 Statement stmt = con.createStatement();
@@ -111,9 +107,9 @@ public class LoginHome extends AppCompatActivity {
                 }
             }
         }catch (Exception ex) {
-            /*if the db does not exist
-            * if the table does not exist
-            * show a message explaining it to the user..............................................*/
+            //if the db does not exist
+            //if the table does not exist
+            //show a message explaining it to the user..............................................
             isSuccess = false;
             message = "Exceptions....." +ex;
             Log.e("Exceptions.....",ex.getMessage());
@@ -148,15 +144,16 @@ public class LoginHome extends AppCompatActivity {
             }
             return message;
         }
+
         @Override
         protected void onPostExecute(String s) {
             // show the message stored in a variable................................................
-            Toast.makeText(getBaseContext(),""+ message,Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(),""+ message,Toast.LENGTH_SHORT).show();
 
             //if successfully the input data and saved data is the same,
             // give access to the next screen and passe the username................................
             if(isSuccess) {
-                Intent intent=new Intent(LoginHome.this,ClimHome.class);
+                Intent intent=new Intent(LoginHome.this,Home.class);
                 intent.putExtra("user", userStr);
                 startActivity(intent);
             }
@@ -165,4 +162,3 @@ public class LoginHome extends AppCompatActivity {
         }
     }
 }
-

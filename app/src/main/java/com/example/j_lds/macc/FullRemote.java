@@ -11,6 +11,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -77,6 +78,11 @@ public class FullRemote extends AppCompatActivity {
         ACNameStatusP1.setText(ACname + " : ");
 
         //get AC id which will help to send the increment or decrement temperature to the server(ESP32)
+
+
+
+
+        //change how the commandeMessage will be sended !!!!!!!!!!!!!!!!!!!!!!!
         Intent intent = getIntent();
         ACidInfo = intent.getIntExtra("climIdInfo",0);
         ACidInfo = ACidInfo * 100;
@@ -134,10 +140,11 @@ public class FullRemote extends AppCompatActivity {
         fab_settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Intent intent = new Intent(FullRemote.this, Settings.class);
+                Intent intent = new Intent(FullRemote.this, Settings.class);
+                intent.putExtra("user", nameTextPassStr);
                 startActivity(intent);
                 finish();
-                System.exit(0);*/
+                System.exit(0);
             }
         });
 
@@ -280,16 +287,17 @@ public class FullRemote extends AppCompatActivity {
     {
         @Override
         protected Void doInBackground(Void... voids) {
-            try {
-                String host = "192.168.4.1";
+            Character b = (char) commandMessage;
+                try {
+                String host = "93.121.180.47"; //93.121.180.74  192.168.4.1
                 int port = 1060;
                 s = new Socket(host, port);
                 pw = new PrintWriter(s.getOutputStream());
-                pw.write(commandMessage);
+                pw.write(b);
                 pw.flush();
                 pw.close();
                 s.close();
-
+                Log.e("SOCKET int:", String.valueOf(commandMessage));
             } catch (IOException e) {
                 e.printStackTrace();
             }

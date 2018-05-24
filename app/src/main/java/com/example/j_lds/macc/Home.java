@@ -43,7 +43,7 @@ public class Home extends AppCompatActivity {
     private GestureDetectorCompat gestureObjet;
     private ProgressDialog progressDialog;
     private ProgressBar progressBar;
-    private FloatingActionButton fab;
+    private FloatingActionButton fabSettings;
     private FloatingActionButton fabExit;
     private FloatingActionButton fabGraph;
     private ConnectionClass connectionClass;
@@ -105,17 +105,18 @@ public class Home extends AppCompatActivity {
         //get current date and time and store it in string timeStemp................................
         timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
 
-        fab = (FloatingActionButton)findViewById(R.id.floatingActionButton_settings);
+        fabSettings = (FloatingActionButton)findViewById(R.id.floatingActionButton_settings);
         fabExit = (FloatingActionButton)findViewById(R.id.floatingActionButton_homeExit);
         fabGraph = (FloatingActionButton)findViewById(R.id.floatingActionButton_homeGraph);
 
-        fab.setOnClickListener(new View.OnClickListener() {
+        fabSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Intent intent = new Intent(Home.this, Settings.class);
+                Intent intent = new Intent(Home.this, Settings.class);
+                intent.putExtra("user", nameTextPassStr);
                 startActivity(intent);
                 finish();
-                System.exit(0);*/
+                System.exit(0);
             }
         });
         fabExit.setOnClickListener(new View.OnClickListener() {
@@ -276,9 +277,10 @@ public class Home extends AppCompatActivity {
         } else {
             //prepare a query and a statement.......................................................
             //i need to get four temperatures and their hours and place them from recent to dated...
-            String query = "select HUMIDITE from SALLE_BAT where NOM_BAT = '"+className+"' and DATE_JOUR = '"+timeStamp+"' order by ID";//2018-05-14 10:46:26
+            //String query = "select HUMIDITE from SALLE_BAT where NOM_BAT = '"+className+"' and DATE_JOUR = '"+timeStamp+"' order by ID";//2018-05-14 10:46:26
+            String queryText = "select HUMIDITE from SALLE_BAT where NOM_BAT = 'BTV' order by ID";
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
+            ResultSet rs = stmt.executeQuery(queryText);
 
             //
             while(rs.next()){
@@ -286,9 +288,10 @@ public class Home extends AppCompatActivity {
                 humidSuccess = true;
             }
 
-            String query1 = "select TEMPERATURE from SALLE_BAT where NOM_BAT = '"+className+"' and DATE_JOUR = '"+timeStamp+"' order by DATE_JOUR";
+            //String query1 = "select TEMPERATURE from SALLE_BAT where NOM_BAT = '"+className+"' and DATE_JOUR = '"+timeStamp+"' order by DATE_JOUR";
+            String query1Text = "select TEMPERATURE from SALLE_BAT where NOM_BAT = 'BTV' order by ID";
             Statement stmt1 = con.createStatement();
-            ResultSet rs1 = stmt1.executeQuery(query1);
+            ResultSet rs1 = stmt1.executeQuery(query1Text);
 
             while(rs1.next()){
                 temperature = rs1.getInt(1);
@@ -309,8 +312,8 @@ public class Home extends AppCompatActivity {
         }
 
         @Override
-        protected String doInBackground(String... strings) {
-            /*try {
+        protected String doInBackground(String... strings) {/*
+            try {
                 e4Csg1MACC_sqlQueryHumidity();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -325,7 +328,7 @@ public class Home extends AppCompatActivity {
             //if isSuccess is true than represent the graph and warn the user.......................
             //or warn the user the graph did not loaded.............................................
             if (humidSuccess && tempSuccess && askServerInfoSuccess) {
-                tempText.setText(temperature);
+                tempText.setText(""+temperature);
                 progressBar.setProgress(humidity);
                 humidityPercentageText.setText(humidity+"%");
                 message = "data found";
@@ -358,7 +361,7 @@ public class Home extends AppCompatActivity {
 
             } else if (event2.getX() < event1.getX()) {
                 //right
-                if (goodClimInfo) {
+                if (goodClimInfo){
                     Intent intent = new Intent(Home.this, FullRemote.class);
                     intent.putExtra("user", nameTextPassStr);
                     intent.putExtra("ACName",selectedAC);

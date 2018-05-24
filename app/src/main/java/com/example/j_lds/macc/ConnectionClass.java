@@ -1,13 +1,12 @@
 package com.example.j_lds.macc;
 
-
 import android.os.StrictMode;
 import android.util.Log;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-//hostname local 192.168.13.91
+//hostname local for 192.168.13.91
 // local db 192.168.137.127
 //hostname distant 93.121.180.47
 // db user MACC

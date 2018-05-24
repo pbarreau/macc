@@ -25,9 +25,15 @@
         <activity android:name=".ClimHome" />
         <activity android:name=".TemperatureGraph" />
         <activity android:name=".findSalleClim" />
-        <activity android:name=".Home" android:noHistory = "true" />
-        <activity android:name=".FullRemote" android:noHistory = "true" />
-        <activity android:name=".Graph"></activity>
+        <activity
+            android:name=".Home"
+            android:noHistory="true" />
+        <activity
+            android:name=".FullRemote"
+            android:noHistory="true" />
+        <activity android:name=".Graph" />
+        <activity android:name=".Settings" />
+        <activity android:name=".Configurations"></activity>
     </application>
 
 </manifest>

@@ -10,11 +10,11 @@
     <com.jjoe64.graphview.GraphView
         android:id="@+id/Graph"
         android:layout_width="314dp"
-        android:layout_height="440dp"
+        android:layout_height="220dp"
         android:layout_marginStart="8dp"
         android:background="#ffffff"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_temperature" />
 
     <Button
         android:id="@+id/button_backGraph"
@@ -30,17 +30,43 @@
         tools:ignore="HardcodedText" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textView_temperature"
         android:layout_width="268dp"
-        android:layout_height="48dp"
+        android:layout_height="32dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
         android:text="@string/temperature_graph"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="#ffffff"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:fontFamily="cursive"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/Graph1"
+        android:layout_width="314dp"
+        android:layout_height="220dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:background="#ffffff"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_humidity" />
+
+    <TextView
+        android:id="@+id/textView_humidity"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:text="@string/humidity_graph"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@android:color/background_light"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:fontFamily="cursive"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Graph" />
 
 
 </android.support.constraint.ConstraintLayout>

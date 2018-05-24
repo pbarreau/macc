@@ -33,7 +33,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class Graph extends AppCompatActivity {
-    LineGraphSeries<DataPoint> series;
+    LineGraphSeries<DataPoint> seriesTemp,seriesHumi;
     SimpleDateFormat sdf = new java.text.SimpleDateFormat("hh:mm");
 
     //my attributes
@@ -42,6 +42,8 @@ public class Graph extends AppCompatActivity {
     private static double temperature2;
     private static double temperature3;
     private static double temperature4;
+    //
+    private static double humidite1,humidite2,humidite3,humidite4;
     //values which i will get the last 4 times of each temperatures from the db.....................
     private static Time tempTime1;
     private static Time tempTime2;
@@ -54,6 +56,7 @@ public class Graph extends AppCompatActivity {
     private Button button_BACK;
     //the constructors..............................................................................
     private ArrayList<Double> tableTemp = new ArrayList<Double>();
+    private ArrayList<Double> tableHumi = new ArrayList<Double>();
     private ArrayList<Time> tableTime = new ArrayList<Time>();
     //a string date that will have the current day..................................................
     private String timeStamp;
@@ -93,7 +96,7 @@ public class Graph extends AppCompatActivity {
         timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
 
         //get the "Salle" by ssid fom ClimHome.class................................................
-        //salleName = e4Csg1MACC_getWifiSSID
+        salleName = e4Csg1MACC_getWifiSSID();
 
         //(execute) find temperature, time values in db and show the graph..........................
         E4cBackground e4Task = new E4cBackground();
@@ -117,14 +120,15 @@ public class Graph extends AppCompatActivity {
             //prepare a query and a statement.......................................................
             //i need to get four temperatures and their hours and place them from recent to dated...
             //String query = "select TEMPERATURE,DATE_JOUR from SALLE where NOM_BAT = '"+salleName+"' and DATE_JOUR = '"+timeStamp+"' order by DATE_JOUR"; //2018-04-10
-            String queryTest = "select TEMPERATURE,DATE_JOUR from SALLE_BAT where NOM_BAT = 'BTV' order by DATE_JOUR";
+            String queryTest = "select TEMPERATURE,HUMIDITE,DATE_JOUR from SALLE_BAT where NOM_BAT = 'BTV' order by DATE_JOUR";
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(queryTest);
 
             //
             while(rs.next()){
                 tableTemp.add(rs.getDouble(1));
-                tableTime.add(rs.getTime(2));
+                tableHumi.add(rs.getDouble(2));
+                tableTime.add(rs.getTime(3));
 
             }
             isSuccess = true;
@@ -134,7 +138,13 @@ public class Graph extends AppCompatActivity {
             temperature3 = tableTemp.get(2);
             temperature4 = tableTemp.get(3);
 
-            //affect the four recent values to my temperature variables from the ArrayList..........
+            ////affect the four recent values to my humidity variables from the ArrayList...........
+            humidite1 = tableHumi.get(0);
+            humidite2 = tableHumi.get(1);
+            humidite3 = tableHumi.get(2);
+            humidite4 = tableHumi.get(3);
+
+            //affect the four recent values to my time variables from the ArrayList.................
             tempTime1 = tableTime.get(0);
             tempTime2 = tableTime.get(1);
             tempTime3 = tableTime.get(2);
@@ -147,7 +157,7 @@ public class Graph extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
 
-            progressDialog.setMessage("Loading graph...");
+            progressDialog.setMessage("Loading graphs...");
             progressDialog.show();
 
             super.onPreExecute();
@@ -171,14 +181,25 @@ public class Graph extends AppCompatActivity {
                 //find my Graph id from the xml file................................................
                 //create an object series ..........................................................
                 //add the points using series and show on graph.....................................
-                GraphView graph = (GraphView)findViewById(R.id.Graph);
-                series = new LineGraphSeries<DataPoint>(e4Csg1MACC_getDataPoint());
-                series.setBackgroundColor(Color.RED);
-                graph.addSeries(series);
+                GraphView graphTemp = (GraphView)findViewById(R.id.Graph);
+                GraphView graphHumidity = (GraphView)findViewById(R.id.Graph1);
+                seriesTemp = new LineGraphSeries<DataPoint>(e4Csg1MACC_getDataPointTemp());
+                seriesHumi = new LineGraphSeries<DataPoint>(e4Csg1MACC_getDataPointHumi());
+                graphTemp.addSeries(seriesTemp);
+                graphHumidity.addSeries(seriesHumi);
 
 
                 //show the time in a time format hh:mm
-                graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter(){
+                graphTemp.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter(){
+                    @Override
+                    public String formatLabel(double value, boolean isValueX) {
+                        if(isValueX){
+                            return sdf.format(new Date((long)value));
+                        }
+                        return super.formatLabel(value, isValueX);
+                    }
+                });
+                graphHumidity.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter(){
                     @Override
                     public String formatLabel(double value, boolean isValueX) {
                         if(isValueX){
@@ -188,14 +209,17 @@ public class Graph extends AppCompatActivity {
                     }
                 });
 
-                // graph.getGridLabelRenderer().setNumHorizontalLabels(10);
-                graph.getViewport().setScalable(true);
-                Viewport viewport = graph.getViewport();
-                viewport.setYAxisBoundsManual(true);
-//                viewport.setMinY(0);
-//                viewport.setMaxY(30);
+                graphTemp.getGridLabelRenderer().setNumHorizontalLabels(4);
+                graphHumidity.getGridLabelRenderer().setNumHorizontalLabels(4);
+                graphTemp.getViewport().setScalable(true);
+                graphHumidity.getViewport().setScalable(true);
+                Viewport viewportTemp = graphTemp.getViewport();
+                Viewport viewportHumi = graphHumidity.getViewport();
+                viewportTemp.setYAxisBoundsManual(true);
+                viewportHumi.setYAxisBoundsManual(true);
 
-                e4Csg1MACC_getDataPoint();
+                e4Csg1MACC_getDataPointTemp();
+                e4Csg1MACC_getDataPointHumi();
 
                 message = "Graph loaded";
             }else{
@@ -206,34 +230,28 @@ public class Graph extends AppCompatActivity {
         }
     }
 
-    public DataPoint[] e4Csg1MACC_getDataPoint() {
+    public DataPoint[] e4Csg1MACC_getDataPointTemp() {
         DataPoint[] dp = new DataPoint[]{
                 new DataPoint(tempTime1, temperature1),    //new DataPoint(new Date().getTime(),1),
                 new DataPoint(tempTime2, temperature2),    //new DataPoint(heur,valeur),
                 new DataPoint(tempTime3, temperature3),
-                new DataPoint(tempTime4, temperature4)
+                 new DataPoint(tempTime4, temperature4),
+        };
+        return (dp);
+    }
+    public DataPoint[] e4Csg1MACC_getDataPointHumi() {
+        DataPoint[] dp = new DataPoint[]{
+                new DataPoint(tempTime1,humidite1),   //new DataPoint(heur,valeur),
+                new DataPoint(tempTime2,humidite2),
+                new DataPoint(tempTime3,humidite3),
+                new DataPoint(tempTime4,humidite4)
         };
         return (dp);
     }
 
-    public void e4Csg1MACC_backHome(){
-        //get the activity name where the user came from
-        //String backToActivity = getIntent().getStringExtra("Previous Activity");
-
-        //bring back the user where the user were
-        //if (backToActivity.equals("Home")){
-            Intent intent;
+    public void e4Csg1MACC_backHome(){Intent intent;
             intent = new Intent(Graph.this, Home.class);
             intent.putExtra("user", userName);
             startActivity(intent);
-        /*}
-        if (backToActivity.equals("FullRemote")) {
-            Intent intent;
-            intent = new Intent(Graph.this, FullRemote.class);
-            intent.putExtra("user", userNameFR);
-            intent.putExtra("ACName", ACStringFR);
-            intent.putExtra("climIdInfo", ACidInfoFR);
-            startActivity(intent);
-        }*/
     }
 }

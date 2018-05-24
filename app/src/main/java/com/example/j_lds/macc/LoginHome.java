@@ -70,7 +70,7 @@ public class LoginHome extends AppCompatActivity {
 
     }
 
-    private void e4Csg1MACC_get_db_Data(){
+    private void e4Csg1MACC_get_db_Data(){/*
         try {
             //call my e4Csg1MACC_CONN() method situated in my ConnectionClass file
             // to establish a connexion with the db.................................................
@@ -113,12 +113,12 @@ public class LoginHome extends AppCompatActivity {
             isSuccess = false;
             message = "Exceptions....." +ex;
             Log.e("Exceptions.....",ex.getMessage());
-        }/*
+        }*/
                 //if the db is off service
                 if(userStr.equals("Barreau")&& passStr.equals("Hello10")){
                     isSuccess = true;
                     message = "Login successfull";
-                }*/
+                }
     }
 
     private class E4doLogin extends AsyncTask<String,String,String>
@@ -153,7 +153,7 @@ public class LoginHome extends AppCompatActivity {
             //if successfully the input data and saved data is the same,
             // give access to the next screen and passe the username................................
             if(isSuccess) {
-                Intent intent=new Intent(LoginHome.this,Home.class);
+                Intent intent=new Intent(LoginHome.this,Home.class);    //Home.class
                 intent.putExtra("user", userStr);
                 startActivity(intent);
             }

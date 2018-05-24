@@ -3,4 +3,6 @@
     <string name="clim">Clim</string>
     <string name="temperature_graph">Temperature graph</string>
     <string name="language">Language</string>
+    <string name="humidity_graph">Humidity graph</string>
 </resources>
+

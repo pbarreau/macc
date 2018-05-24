@@ -294,7 +294,7 @@
             android:tint="@android:color/holo_blue_bright"
             app:backgroundTint="@android:color/black"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/floatingActionButton_settings"
+            app:layout_constraintEnd_toStartOf="@+id/floatingActionButton_settingsFullRemote"
             app:layout_constraintStart_toEndOf="@+id/floatingActionButton_homeGraph"
             app:layout_constraintTop_toTopOf="parent"
             app:rippleColor="@android:color/holo_blue_bright"

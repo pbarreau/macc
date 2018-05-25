@@ -22,7 +22,7 @@
             android:layout_marginBottom="20dp"
             android:fontFamily="cursive"
             android:gravity="center"
-            android:text="LOGIN"
+            android:text="Identification"
             android:textColor="#ffffff"
             android:textSize="40sp"
             tools:ignore="HardcodedText,UnusedAttribute" />
@@ -38,9 +38,9 @@
                 android:id="@+id/User"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="User"
-                android:text="Barreau"
+                android:hint="Utilisateur"
                 android:singleLine="true"
+                android:text="Barreau"
                 android:textColor="#ffffff"
                 tools:ignore="HardcodedText" />
         </android.support.design.widget.TextInputLayout>
@@ -56,7 +56,7 @@
                 android:id="@+id/pass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Password"
+                android:hint="Mot de Passe"
                 android:inputType="textPassword"
                 android:singleLine="true"
                 android:text="Hello10"
@@ -65,13 +65,13 @@
         </android.support.design.widget.TextInputLayout>
 
         <Button
+            android:id="@+id/valider"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Login"
             android:layout_marginTop="30dp"
             android:background="#24c4b9"
+            android:text="Valider"
             android:textColor="#0b0b0b"
-            android:id="@+id/login"
             tools:ignore="HardcodedText" />
 
 

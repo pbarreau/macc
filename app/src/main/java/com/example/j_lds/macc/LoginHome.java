@@ -7,21 +7,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import android.util.Log;
 
 public class LoginHome extends AppCompatActivity {
     //Attributes....................................................................................
     private EditText user,pass;
-    private Button login;
+    private Button valider;
     private ProgressDialog progressDialog;
     private ConnectionClass connectionClass;
 
@@ -50,7 +43,7 @@ public class LoginHome extends AppCompatActivity {
         //Affect my EditText and Button xml objects to my constructor objects.......................
         user = (EditText) findViewById(R.id.User);
         pass = (EditText) findViewById(R.id.pass);
-        login = (Button) findViewById(R.id.login);
+        valider = (Button) findViewById(R.id.valider);
 
         userStr = user.getText().toString();
         passStr = pass.getText().toString();
@@ -60,7 +53,7 @@ public class LoginHome extends AppCompatActivity {
         progressDialog=new ProgressDialog(this);
 
         //set a click listener to my Login button...................................................
-        login.setOnClickListener(new View.OnClickListener() {
+        valider.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 E4doLogin login=new E4doLogin();
@@ -77,13 +70,13 @@ public class LoginHome extends AppCompatActivity {
             //if my connexion is null (does not exit) show a message................................
             Connection con = connectionClass.e4Csg1MACC_CONN();
             if (con == null) {
-                message = "Please check your internet connection";
+                message = "Veuillez vérifier votre connexion internet";
             } else {
                 //if the connexion exist then :
                 //prepare a query
                 //execute the query
                 //find and match the credentials entered and stored in the db
-                //      -if found, show a message saying "login successfully"
+                //      -if found, show a message saying "valider successfully"
                 //      -if not, show a message "Error credential...not match!!!"...................
 
                 String query = " select * from PROFESSEUR where NOM = '"+userStr+"' and MDP = '"+passStr+"'";
@@ -98,12 +91,12 @@ public class LoginHome extends AppCompatActivity {
 
                     if (userDB.equals(userStr) && passDB.equals(passStr)) {
                         isSuccess = true;
-                        message = "Login successfull";
+                        message = "Bienvenu";
                     }
                 }
 
                 if(!userDB.equals(userStr)|| !passDB.equals(passStr)){
-                    message = "Error credential...not match!!!";
+                    message = "Erreur d'identité… Utilisateur et ou mot de passe incorrect!!!";
                 }
             }
         }catch (Exception ex) {
@@ -127,7 +120,7 @@ public class LoginHome extends AppCompatActivity {
         protected void onPreExecute() {
             /*while the doInBackground(String... params) : protected is executed
             * show a search symbol and mark "Loading..."............................................*/
-            progressDialog.setMessage("Loading...");
+            progressDialog.setMessage("Chargement...");
             progressDialog.show();
 
             super.onPreExecute();
@@ -137,7 +130,7 @@ public class LoginHome extends AppCompatActivity {
         protected String doInBackground(String... params) {
             //if one or two fields are empty, advice the user.......................................
             if (userStr.trim().equals("") || passStr.trim().equals(""))
-                message = "Please enter all fields....";
+                message = "Merci de compléter tous les champs....";
             else {
                 //if not execute my "e4Csg1MACC_get_db_Data()"......................................
                 e4Csg1MACC_get_db_Data();

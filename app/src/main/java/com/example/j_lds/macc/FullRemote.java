@@ -32,9 +32,9 @@ public class FullRemote extends AppCompatActivity {
     private Socket s;
     private PrintWriter pw;
 
-    private TextView acNameStatusP2;
+    private TextView acNameStatusP1,acNameStatusP2;
 
-    private FloatingActionButton fab_power,fab_graph,fab_settings,fab_exit;
+    private FloatingActionButton fab_power,fab_graph,fab_exit;
     private Button button_plus,button_minus,button_temp,button_timer;
 
     private String nameTextPassStr,ACname;
@@ -92,13 +92,13 @@ public class FullRemote extends AppCompatActivity {
         //declare my buttons........................................................................
         fab_power = findViewById(R.id.floatingActionButton_power);
         fab_graph = findViewById(R.id.floatingActionButton_homeGraph);
-        fab_settings = findViewById(R.id.floatingActionButton_settingsFullRemote);
         fab_exit = findViewById(R.id.floatingActionButton_FullRemoteExit);
         button_temp = findViewById(R.id.button_temp);
         button_timer = findViewById(R.id.button_timer);
         button_plus = findViewById(R.id.button_plus);
         button_minus = findViewById(R.id.button_minus);
 
+        acNameStatusP1 = (TextView)findViewById(R.id.textView_acNameStatusP1);
         acNameStatusP2 = (TextView)findViewById(R.id.textView_acNameStatusP2);
 
         progressDialog=new ProgressDialog(this);
@@ -137,17 +137,6 @@ public class FullRemote extends AppCompatActivity {
             }
         });
 
-        fab_settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(FullRemote.this, Settings.class);
-                intent.putExtra("user", nameTextPassStr);
-                startActivity(intent);
-                finish();
-                System.exit(0);
-            }
-        });
-
         fab_exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -178,6 +167,8 @@ public class FullRemote extends AppCompatActivity {
 
         intTempValue = startTemp;
 
+        //mettre nom de la clim
+        acNameStatusP1.setText("clim ");
     }
 
     /*get the class name by the wifi ssid

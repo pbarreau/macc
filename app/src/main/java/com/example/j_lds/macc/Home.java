@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
-import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -24,11 +23,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.ServerSocket;
+import java.io.PrintStream;
 import java.net.Socket;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -43,7 +40,6 @@ public class Home extends AppCompatActivity {
     private GestureDetectorCompat gestureObjet;
     private ProgressDialog progressDialog;
     private ProgressBar progressBar;
-    private FloatingActionButton fabSettings;
     private FloatingActionButton fabExit;
     private FloatingActionButton fabGraph;
     private ConnectionClass connectionClass;
@@ -60,10 +56,11 @@ public class Home extends AppCompatActivity {
     private ArrayList<String> arrayList;
     private int humidity, temperature;
     private int nubSelectedAC;
+    private int nbClim;
 
     private boolean humidSuccess = false;
     private boolean tempSuccess = false;
-    private boolean askServerInfoSuccess = false;
+    private boolean getClim = false;
     private boolean goodClimInfo = false;
 
     @Override
@@ -84,12 +81,13 @@ public class Home extends AppCompatActivity {
         String name = getIntent().getStringExtra("user");
         nameTextPassStr = name;
         TextView nameText = (TextView) findViewById(R.id.textView_nameHome);
-        nameText.setText("Hello\n"+name);
+        nameText.setText("Bonjour\n"+name);
 
         //
         className = (TextView)findViewById(R.id.textView_classNameHome);
         String salle = e4Csg1MACC_getWifiSSID();
-        className.setText("Salle:\n"+ salle);
+        className.setText("Pièce :\n"+ salle);
+
 
         //
         gestureObjet = new GestureDetectorCompat(this, new Home.LearnGesture());
@@ -105,20 +103,9 @@ public class Home extends AppCompatActivity {
         //get current date and time and store it in string timeStemp................................
         timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
 
-        fabSettings = (FloatingActionButton)findViewById(R.id.floatingActionButton_settings);
         fabExit = (FloatingActionButton)findViewById(R.id.floatingActionButton_homeExit);
         fabGraph = (FloatingActionButton)findViewById(R.id.floatingActionButton_homeGraph);
 
-        fabSettings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Home.this, Settings.class);
-                intent.putExtra("user", nameTextPassStr);
-                startActivity(intent);
-                finish();
-                System.exit(0);
-            }
-        });
         fabExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -126,6 +113,7 @@ public class Home extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 System.exit(0);
+
             }
         });
         fabGraph.setOnClickListener(new View.OnClickListener() {
@@ -140,50 +128,12 @@ public class Home extends AppCompatActivity {
                 System.exit(0);
             }
         });
+/*
+        getInformation getInfo = new getInformation();
+        getInfo.execute();*/
 
-                getInformation getInfo = new getInformation();
-        getInfo.execute();
-
-        //start thread to receive data from the server
-        new Thread(receiveServerData).start();
+        showClim();
     }
-
-    //create Runnable to receive a socket from the server
-    Runnable receiveServerData = new Runnable() {
-        Socket s;
-        ServerSocket ss;
-        InputStreamReader isr;
-        BufferedReader br;
-        Handler h = new Handler();
-
-        @Override
-        public void run() {
-            try {
-                //listening on port 1061 for a serverSocket
-                ss = new ServerSocket(1061);
-
-                //infinity
-                while (true) {
-                    s = ss.accept();
-                    isr = new InputStreamReader(s.getInputStream());
-                    br = new BufferedReader(isr);
-
-                    serverEncryptMessage = br.readLine();
-
-                    h.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            //decrypt the message
-                            decryptServerData();
-                            showClim();
-                        }
-                    });
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    };
 
     /*get the class name by the wifi ssid
     shows the user where he is connceted (in which class he is still connected).....................
@@ -195,77 +145,75 @@ public class Home extends AppCompatActivity {
         return ssid;
     }
 
-    public void decryptServerData(){
-        //decrypting the message by splitting it
-        //the server must use ";" to separate the ACs name
-        String[] serverDataStr = serverEncryptMessage.split(";");
-        //get the fist separate info that is the number of ACs + 1 (itself)
-        int totalACs = Integer.parseInt(serverDataStr[0]);
-        //get the second separate info that is the last called temperature
-        //a user send to the server
-
-        //create a list of items for the spinner.
-        arrayList = new ArrayList<String>();
-        arrayList.add("Please press to select an AC");
-
-        //store in the list all the Air Conditioner names the serve send me
-        for (int i = 1; i < totalACs; i++ ){
-            arrayList.add(serverDataStr[i]);
-        }
-    }
-
-    private void askServerInfo(){
+    private void getClimFromESP() throws IOException {
+        int getnbClim;
         Socket s;
-        PrintWriter pw;
-        String msg = "Server send ACs";
+        BufferedReader br;
+        s = new Socket("192.168.4.1",1060);
+        PrintStream p = new PrintStream(s.getOutputStream());
+        getnbClim = 0;
+        Character val = (char)getnbClim;
+        p.println(val);
 
-        try {
-            s = new Socket("192.168.1.74", 1060);
-            pw = new PrintWriter(s.getOutputStream());
-            pw.write(msg);
-            pw.flush();
-            pw.close();
-            s.close();
-            askServerInfoSuccess = true;
-        }catch (IOException e){
-            e.printStackTrace();
-        }
+        //accept the resultat
+        InputStreamReader isr = new InputStreamReader(s.getInputStream());
+        //br = new BufferedReader(isr);
+        android.os.SystemClock.sleep(1000);
+        nbClim = isr.read();
+        nbClim--;
+        p.close();
+        isr.close();
+        s.close();
+        getClim = true;
+
+        //need to execute this methode twice
     }
 
     private void showClim(){
         //get the spinner from the xml.
         Spinner spinner = findViewById(R.id.spinner_clim);
 
-        //create an adapter to describe how the items are displayed, adapters are used in several places in android.
-        //There are multiple variations of this, but this is the basic variant.
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, arrayList);
+        //create a list of items for the spinner.
+        arrayList = new ArrayList<String>();
+        arrayList.add("Veuillez appuyer pour sélectionner un climatiseur");
 
-        //set the spinners adapter to the previously created one.
-        spinner.setAdapter(adapter);
+        //test
+        nbClim = 2;
 
-        //when spinner selected an item in the list
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedAC = parent.getItemAtPosition(position).toString();
-                nubSelectedAC = parent.getSelectedItemPosition();
-
-                if(selectedAC.equals("Please press to select an AC")){
-                    Toast.makeText(getBaseContext(), "Please select an AC", Toast.LENGTH_SHORT).show();
-                }
-                if(!selectedAC.equals("Please press to select an AC")){
-                    goodClimInfo = true;
-                    Toast.makeText(getBaseContext(), "AC selected : " + selectedAC, Toast.LENGTH_SHORT).show();
-
-                }
+        //store the number of AC in a list to user after
+            for (int i = 1; i > nbClim; i++) {
+                arrayList.add("Climatiseur " + i);
             }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // TODO Auto-generated method stub
-            }
+            //create an adapter to describe how the items are displayed, adapters are used in several places in android.
+            //There are multiple variations of this, but this is the basic variant.
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, arrayList);
 
-        });
+            //set the spinners adapter to the previously created one.
+            spinner.setAdapter(adapter);
+
+            //when spinner selected an item in the list
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    selectedAC = parent.getItemAtPosition(position).toString();
+                    nubSelectedAC = parent.getSelectedItemPosition();
+
+                    if(selectedAC.equals("Veuillez appuyer pour sélectionner un climatiseur")){
+                        Toast.makeText(getBaseContext(), "Veuillez sélectionner un climatiseur", Toast.LENGTH_SHORT).show();
+                    }
+                    if(!selectedAC.equals("Veuillez appuyer pour sélectionner un climatiseur")){
+                        goodClimInfo = true;
+                        Toast.makeText(getBaseContext(), "Climatiseur sélectionner : " + selectedAC, Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    // TODO Auto-generated method stub
+                }
+            });
     }
 
     private void e4Csg1MACC_sqlQueryHumidity() throws SQLException {
@@ -305,7 +253,7 @@ public class Home extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
 
-            progressDialog.setMessage("Retrieving data...");
+            progressDialog.setMessage("Récupération des données...");
             progressDialog.show();
 
             super.onPreExecute();
@@ -319,7 +267,12 @@ public class Home extends AppCompatActivity {
                 e.printStackTrace();
                 message = "Exceptions......" + e;
             }*/
-            askServerInfo();
+            try {
+                getClimFromESP();
+                getClimFromESP();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return message;
         }
 
@@ -327,16 +280,16 @@ public class Home extends AppCompatActivity {
         protected void onPostExecute(String s){
             //if isSuccess is true than represent the graph and warn the user.......................
             //or warn the user the graph did not loaded.............................................
-            if (humidSuccess && tempSuccess && askServerInfoSuccess) {
+            if (humidSuccess && tempSuccess && getClim) {
                 tempText.setText(""+temperature);
                 progressBar.setProgress(humidity);
                 humidityPercentageText.setText(humidity+"%");
-                message = "data found";
+                message = "Données Trouvé";
             }else{
                 tempText.setText("0");
                 progressBar.setProgress(0);
                 humidityPercentageText.setText(0+"%");
-                message = "data not found";
+                message = "Données non Trouvé";
             }
             Toast.makeText(getBaseContext(),""+ message,Toast.LENGTH_LONG).show();
             progressDialog.hide();
@@ -370,7 +323,7 @@ public class Home extends AppCompatActivity {
                     finish();
                     System.exit(0);
                 }else{
-                    Toast.makeText(getBaseContext(), "Please select an AC\nbefore proceeding...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), "Veuillez sélectionner un AC\navant de procéder...", Toast.LENGTH_SHORT).show();
                 }
             }
             return true;

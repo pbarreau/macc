@@ -16,7 +16,7 @@
         android:layout_marginRight="204dp"
         android:layout_marginStart="81dp"
         android:fontFamily="cursive"
-        android:text="Class :"
+        android:text="Pièce :"
         android:textColor="@android:color/background_light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,7 +29,7 @@
         android:layout_marginBottom="100dp"
         android:layout_marginTop="20dp"
         android:fontFamily="cursive"
-        android:text="Full Remote"
+        android:text="Télécommande"
         android:textColor="@android:color/background_light"
         app:layout_constraintBottom_toTopOf="@+id/textView_symbol"
         app:layout_constraintStart_toEndOf="@+id/textView_screenTitle1_Home"
@@ -43,7 +43,7 @@
         android:layout_marginStart="125dp"
         android:layout_marginTop="20dp"
         android:fontFamily="cursive"
-        android:text="Home"
+        android:text="Accueil"
         android:textColor="@android:color/background_light"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -120,7 +120,7 @@
         android:layout_marginLeft="15dp"
         android:layout_marginStart="15dp"
         android:fontFamily="cursive"
-        android:text="Humid"
+        android:text="Humidité "
         android:textColor="@android:color/background_light"
         app:layout_constraintBottom_toTopOf="@+id/downPageApp"
         app:layout_constraintStart_toEndOf="@+id/progressBar_humidity" />
@@ -134,6 +134,7 @@
         android:layout_marginRight="15dp"
         android:text="35 %"
         android:textColor="@android:color/background_light"
+        app:fontFamily="cursive"
         app:layout_constraintBottom_toTopOf="@+id/downPageApp"
         app:layout_constraintEnd_toStartOf="@+id/progressBar_humidity" />
 
@@ -145,20 +146,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/floatingActionButton_settings"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginEnd="50dp"
-            android:layout_marginRight="50dp"
-            android:clickable="true"
-            android:tint="@android:color/holo_blue_bright"
-            app:backgroundTint="@android:color/black"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:rippleColor="@android:color/holo_blue_bright"
-            app:srcCompat="@mipmap/ic_jlsetting_app_foreground" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/floatingActionButton_homeGraph"
@@ -178,16 +165,13 @@
             android:id="@+id/floatingActionButton_homeExit"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_marginEnd="66dp"
-            android:layout_marginLeft="65dp"
-            android:layout_marginRight="66dp"
-            android:layout_marginStart="65dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginRight="50dp"
             android:clickable="true"
             android:tint="@android:color/holo_blue_bright"
             app:backgroundTint="@android:color/black"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/floatingActionButton_settings"
-            app:layout_constraintStart_toEndOf="@+id/floatingActionButton_homeGraph"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:rippleColor="@android:color/holo_blue_bright"
             app:srcCompat="@android:drawable/ic_notification_clear_all" />
@@ -201,7 +185,7 @@
         android:layout_marginLeft="81dp"
         android:layout_marginRight="204dp"
         android:layout_marginStart="81dp"
-        android:text="Hello"
+        android:text="Bonjour"
         android:textColor="@android:color/background_light"
         app:fontFamily="cursive"
         app:layout_constraintEnd_toEndOf="parent"

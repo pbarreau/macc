@@ -5,11 +5,16 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 public class LoginHome extends AppCompatActivity {
     //Attributes....................................................................................
@@ -24,7 +29,7 @@ public class LoginHome extends AppCompatActivity {
     private String message ="";
     private boolean isSuccess=false;
 
-    private String userDB = "", passDB = "";
+    private String usernameDB = "", userDB = "", passDB = "";
 
     /*void onCreate(Bundle savedInstanceState) is a predefine method of Android Studio
       that will execute everything inside before the user gets the possibility to interact
@@ -79,14 +84,14 @@ public class LoginHome extends AppCompatActivity {
                 //      -if found, show a message saying "valider successfully"
                 //      -if not, show a message "Error credential...not match!!!"...................
 
-                String query = " select * from PROFESSEUR where NOM = '"+userStr+"' and MDP = '"+passStr+"'";
+                String query = " select * from PROFESSEUR where LOGIN = '"+userStr+"' and MDP = '"+passStr+"'";
                 Statement stmt = con.createStatement();
-                //stmt.executeUpdate(query);
                 ResultSet rs = stmt.executeQuery(query);
 
 
                 while (rs.next()) {
-                    userDB = rs.getString(2);
+                    usernameDB = rs.getString(2);
+                    userDB = rs.getString(4);
                     passDB = rs.getString(5);
 
                     if (userDB.equals(userStr) && passDB.equals(passStr)) {
@@ -106,11 +111,11 @@ public class LoginHome extends AppCompatActivity {
             isSuccess = false;
             message = "Exceptions....." +ex;
             Log.e("Exceptions.....",ex.getMessage());
-        }*/
+        }/*/
                 //if the db is off service
-                if(userStr.equals("Barreau")&& passStr.equals("Hello10")){
+                if(userStr.equals("BPascal")&& passStr.equals("Hello10")){
                     isSuccess = true;
-                    message = "Login successfull";
+                    message = "Connexion réussie";
                 }
     }
 
@@ -147,7 +152,7 @@ public class LoginHome extends AppCompatActivity {
             // give access to the next screen and passe the username................................
             if(isSuccess) {
                 Intent intent=new Intent(LoginHome.this,Home.class);    //Home.class
-                intent.putExtra("user", userStr);
+                intent.putExtra("user", usernameDB);
                 startActivity(intent);
             }
             //hide my loading message and symbol....................................................

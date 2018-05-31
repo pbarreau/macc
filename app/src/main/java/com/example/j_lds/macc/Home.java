@@ -22,7 +22,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
@@ -50,16 +49,16 @@ public class Home extends AppCompatActivity {
 
     //a string message that will inform the user....................................................
     private String message = "";
-    private String serverEncryptMessage="";
     //a string date that will have the current day and time that will have the current time.........
     private String nameTextPassStr,timeStamp,lastCalledTemp,selectedAC;
     private ArrayList<String> arrayList;
-    private int humidity, temperature;
+    private int humidity, temperature,lastTempInstruction;
     private int nubSelectedAC;
     private int nbClim;
 
     private boolean humidSuccess = false;
     private boolean tempSuccess = false;
+    private boolean InstructionSuccess = false;
     private boolean getClim = false;
     private boolean goodClimInfo = false;
 
@@ -132,7 +131,7 @@ public class Home extends AppCompatActivity {
         getInformation getInfo = new getInformation();
         getInfo.execute();*/
 
-        showClim();
+        e4Csg1MACC_showClim();
     }
 
     /*get the class name by the wifi ssid
@@ -145,31 +144,33 @@ public class Home extends AppCompatActivity {
         return ssid;
     }
 
-    private void getClimFromESP() throws IOException {
-        int getnbClim;
-        Socket s;
-        BufferedReader br;
-        s = new Socket("192.168.4.1",1060);
-        PrintStream p = new PrintStream(s.getOutputStream());
-        getnbClim = 0;
-        Character val = (char)getnbClim;
-        p.println(val);
+    private void e4Csg1MACC_getClimFromESP(){
+        try {
+            int getnbClim =0;
+            nbClim = -1;
+            while (nbClim == -1) {
+                Socket s;
+                s = new Socket("192.168.4.1", 1060);
+                PrintStream p = new PrintStream(s.getOutputStream());
+                Character val = (char) getnbClim;
+                p.println(val);
 
-        //accept the resultat
-        InputStreamReader isr = new InputStreamReader(s.getInputStream());
-        //br = new BufferedReader(isr);
-        android.os.SystemClock.sleep(1000);
-        nbClim = isr.read();
-        nbClim--;
-        p.close();
-        isr.close();
-        s.close();
-        getClim = true;
-
+                //accept the resultat
+                InputStreamReader isr = new InputStreamReader(s.getInputStream());
+                nbClim = isr.read();
+                nbClim--;
+                p.close();
+                isr.close();
+                s.close();
+                getClim = true;
+            }
+        }catch (IOException  e){
+            e.printStackTrace();
+        }
         //need to execute this methode twice
     }
 
-    private void showClim(){
+    private void e4Csg1MACC_showClim(){
         //get the spinner from the xml.
         Spinner spinner = findViewById(R.id.spinner_clim);
 
@@ -177,13 +178,14 @@ public class Home extends AppCompatActivity {
         arrayList = new ArrayList<String>();
         arrayList.add("Veuillez appuyer pour sélectionner un climatiseur");
 
-        //test
+        //test!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         nbClim = 2;
 
         //store the number of AC in a list to user after
-            for (int i = 1; i > nbClim; i++) {
+            for (int i = 1; i <= nbClim; i++) {
                 arrayList.add("Climatiseur " + i);
             }
+            arrayList.add("Tous les climatiseurs");
 
             //create an adapter to describe how the items are displayed, adapters are used in several places in android.
             //There are multiple variations of this, but this is the basic variant.
@@ -216,35 +218,52 @@ public class Home extends AppCompatActivity {
             });
     }
 
-    private void e4Csg1MACC_sqlQueryHumidity() throws SQLException {
-        //open a connection.........................................................................
-        Connection con = connectionClass.e4Csg1MACC_CONN();
-        //test the connection.......................................................................
-        if (con == null) {
-            message = "Please check your internet connection";
-        } else {
-            //prepare a query and a statement.......................................................
-            //i need to get four temperatures and their hours and place them from recent to dated...
-            //String query = "select HUMIDITE from SALLE_BAT where NOM_BAT = '"+className+"' and DATE_JOUR = '"+timeStamp+"' order by ID";//2018-05-14 10:46:26
-            String queryText = "select HUMIDITE from SALLE_BAT where NOM_BAT = 'BTV' order by ID";
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(queryText);
+    private void e4Csg1MACC_sqlQueryGetInfo(){
+        try {
+            //open a connection.........................................................................
+            Connection con = connectionClass.e4Csg1MACC_CONN();
+            //test the connection.......................................................................
+            if (con == null) {
+                message = "Please check your internet connection";
+            } else {
+                //prepare a query and a statement.......................................................
+                //i need to get latest temperatures and it's time
+                //i need to get latest humidity and it's time
+                //i need to get latest "set temperature instruction" of a room
+                String query1 = "select TEMPERATURE from SALLE_BAT where NOM_BAT = '"+className+"' and DATE_JOUR = '"+timeStamp+"' order by DATE_JOUR";
+                //String query1Text = "select TEMPERATURE from SALLE_BAT where NOM_BAT = 'BTV' order by ID";
+                Statement stmt1 = con.createStatement();
+                ResultSet rs1 = stmt1.executeQuery(query1);
 
-            //
-            while(rs.next()){
-                humidity = rs.getInt(1);
-                humidSuccess = true;
+                while (rs1.next()) {
+                    temperature = rs1.getInt(1);
+                    tempSuccess = true;
+                }
+
+                String query2 = "select HUMIDITE from SALLE_BAT where NOM_BAT = '"+className+"' and DATE_JOUR = '"+timeStamp+"' order by ID";//2018-05-14 10:46:26
+                //String query2Text = "select HUMIDITE from SALLE_BAT where NOM_BAT = 'BTV' order by ID";
+                Statement stmt2 = con.createStatement();
+                ResultSet rs2 = stmt2.executeQuery(query2);
+
+                //
+                while (rs2.next()) {
+                    humidity = rs2.getInt(1);
+                    humidSuccess = true;
+                }
+
+                //
+                String query3 = "select HUMIDITE from SALLE_BAT where NOM_BAT = '"+className+"' and DATE_JOUR = '"+timeStamp+"' order by ID";//2018-05-14 10:46:26
+                Statement stmt3 = con.createStatement();
+                ResultSet rs3 = stmt3.executeQuery(query3);
+
+                //
+                while (rs3.next()) {
+                    lastTempInstruction = rs3.getInt(1);
+                    InstructionSuccess = true;
+                }
             }
-
-            //String query1 = "select TEMPERATURE from SALLE_BAT where NOM_BAT = '"+className+"' and DATE_JOUR = '"+timeStamp+"' order by DATE_JOUR";
-            String query1Text = "select TEMPERATURE from SALLE_BAT where NOM_BAT = 'BTV' order by ID";
-            Statement stmt1 = con.createStatement();
-            ResultSet rs1 = stmt1.executeQuery(query1Text);
-
-            while(rs1.next()){
-                temperature = rs1.getInt(1);
-                tempSuccess = true;
-            }
+        }catch (SQLException s){
+            s.printStackTrace();
         }
     }
 
@@ -260,19 +279,10 @@ public class Home extends AppCompatActivity {
         }
 
         @Override
-        protected String doInBackground(String... strings) {/*
-            try {
-                e4Csg1MACC_sqlQueryHumidity();
-            } catch (SQLException e) {
-                e.printStackTrace();
-                message = "Exceptions......" + e;
-            }*/
-            try {
-                getClimFromESP();
-                getClimFromESP();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        protected String doInBackground(String... strings) {
+            //e4Csg1MACC_sqlQueryGetInfo();
+
+            e4Csg1MACC_getClimFromESP();
             return message;
         }
 
@@ -280,7 +290,7 @@ public class Home extends AppCompatActivity {
         protected void onPostExecute(String s){
             //if isSuccess is true than represent the graph and warn the user.......................
             //or warn the user the graph did not loaded.............................................
-            if (humidSuccess && tempSuccess && getClim) {
+            if (humidSuccess && tempSuccess && InstructionSuccess && getClim) {
                 tempText.setText(""+temperature);
                 progressBar.setProgress(humidity);
                 humidityPercentageText.setText(humidity+"%");
@@ -311,7 +321,6 @@ public class Home extends AppCompatActivity {
         public boolean onFling(MotionEvent event1, MotionEvent event2, float veloccityX, float veloccityY) {
             if (event2.getX() > event1.getX()) {
                 //left
-
             } else if (event2.getX() < event1.getX()) {
                 //right
                 if (goodClimInfo){
@@ -319,6 +328,7 @@ public class Home extends AppCompatActivity {
                     intent.putExtra("user", nameTextPassStr);
                     intent.putExtra("ACName",selectedAC);
                     intent.putExtra("climIdInfo", nubSelectedAC);
+                    intent.putExtra("tempSetInstruction", lastTempInstruction);
                     startActivity(intent);
                     finish();
                     System.exit(0);

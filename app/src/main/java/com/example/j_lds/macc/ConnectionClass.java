@@ -7,7 +7,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 //hostname local for 192.168.13.91
-// local db 192.168.137.127
+// local db via pc 192.168.137.127
 //hostname distant 93.121.180.47
 // db user MACC
 //user pi

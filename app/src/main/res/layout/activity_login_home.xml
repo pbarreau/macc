@@ -40,7 +40,6 @@
                 android:layout_height="wrap_content"
                 android:hint="Utilisateur"
                 android:singleLine="true"
-                android:text="Barreau"
                 android:textColor="#ffffff"
                 tools:ignore="HardcodedText" />
         </android.support.design.widget.TextInputLayout>
@@ -59,7 +58,6 @@
                 android:hint="Mot de Passe"
                 android:inputType="textPassword"
                 android:singleLine="true"
-                android:text="Hello10"
                 android:textColor="#ffffff"
                 tools:ignore="HardcodedText" />
         </android.support.design.widget.TextInputLayout>

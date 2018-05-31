@@ -29,7 +29,6 @@
             android:name=".FullRemote"
             android:noHistory="true" />
         <activity android:name=".Graph" />
-        <activity android:name=".Configurations"></activity>
     </application>
 
 </manifest>

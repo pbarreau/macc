@@ -3,7 +3,6 @@ package com.example.j_lds.macc;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
@@ -12,7 +11,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jjoe64.graphview.DefaultLabelFormatter;
@@ -21,7 +19,6 @@ import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
-import java.nio.file.attribute.GroupPrincipal;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,8 +30,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class Graph extends AppCompatActivity {
-    LineGraphSeries<DataPoint> seriesTemp,seriesHumi;
-    SimpleDateFormat sdf = new java.text.SimpleDateFormat("hh:mm");
+    private LineGraphSeries<DataPoint> seriesTemp,seriesHumi;
+    private SimpleDateFormat sdf = new java.text.SimpleDateFormat("hh:mm");
 
     //my attributes
     //values which i will get the last 4 temperatures from the db...................................
@@ -52,8 +49,8 @@ public class Graph extends AppCompatActivity {
     //declaration of my constructors................................................................
     private ProgressDialog progressDialog;
     private ConnectionClass connectionClass;
-    //declare my button_BACK........................................................................
-    private Button button_BACK;
+    //declare my button_annuler........................................................................
+    private Button button_annuler;
     //the constructors..............................................................................
     private ArrayList<Double> tableTemp = new ArrayList<Double>();
     private ArrayList<Double> tableHumi = new ArrayList<Double>();
@@ -83,12 +80,12 @@ public class Graph extends AppCompatActivity {
         //initialize my constructors................................................................
         connectionClass = new ConnectionClass();
         progressDialog=new ProgressDialog(this);
-        button_BACK = (Button)findViewById(R.id.button_backGraph);
+        button_annuler = (Button)findViewById(R.id.button_annulerGraph);
         //set a click listener to my back...........................................................
-        button_BACK.setOnClickListener(new View.OnClickListener() {
+        button_annuler.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                e4Csg1MACC_backHome();
+                e4Csg1MACC_annulerGraph();
             }
         });
 
@@ -115,12 +112,12 @@ public class Graph extends AppCompatActivity {
         Connection con = connectionClass.e4Csg1MACC_CONN();
         //test the connection.......................................................................
         if (con == null) {
-            message = "Please check your internet connection";
+            message = "Veuillez vérifier votre connexion internet";
         } else {
             //prepare a query and a statement.......................................................
             //i need to get four temperatures and their hours and place them from recent to dated...
-            //String query = "select TEMPERATURE,DATE_JOUR from SALLE where NOM_BAT = '"+salleName+"' and DATE_JOUR = '"+timeStamp+"' order by DATE_JOUR"; //2018-04-10
-            String queryTest = "select TEMPERATURE,HUMIDITE,DATE_JOUR from SALLE_BAT where NOM_BAT = 'BTV' order by DATE_JOUR";
+            //String query = "select TEMPERATURE,HUMIDITE,DATE_JOUR from SALLE_BAT where NOM_BAT = '"+salleName+"' and DATE_JOUR = '"+timeStamp+"' order by DATE_JOUR"; //2018-04-10
+            String queryTest = "select TEMPERATURE,HUMIDITE,DATE_JOUR from SALLE_BAT where NOM_BAT = 'BTV' ORDER BY DATE_JOUR DESC";
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(queryTest);
 
@@ -157,7 +154,7 @@ public class Graph extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
 
-            progressDialog.setMessage("Loading graphs...");
+            progressDialog.setMessage("Chargement des graphes...");
             progressDialog.show();
 
             super.onPreExecute();
@@ -221,9 +218,9 @@ public class Graph extends AppCompatActivity {
                 e4Csg1MACC_getDataPointTemp();
                 e4Csg1MACC_getDataPointHumi();
 
-                message = "Graph loaded";
+                message = "Graphique chargé";
             }else{
-                message = "Graph failed to loaded";
+                message = "Les graphiques n'ont pas pu être chargé";
             }
             Toast.makeText(getBaseContext(),""+ message,Toast.LENGTH_LONG).show();
             progressDialog.hide();
@@ -249,7 +246,7 @@ public class Graph extends AppCompatActivity {
         return (dp);
     }
 
-    public void e4Csg1MACC_backHome(){Intent intent;
+    public void e4Csg1MACC_annulerGraph(){Intent intent;
             intent = new Intent(Graph.this, Home.class);
             intent.putExtra("user", userName);
             startActivity(intent);
